@@ -1,0 +1,44 @@
+.text-hover {
+  color: rgb(33, 30, 31) !important;
+}
+
+.text-hover:hover {
+  /* color: rgba(33, 30, 31, 0.6) !important; */
+  color: #cc00ff !important;
+}
+
+a.active {
+  color: #cc00ff !important;
+}
+
+.navbar {
+  /* background: rgba(158, 70, 219, 0.6) !important; */
+  background: transparent !important;
+}
+
+h1 {
+  font-size: xx-large !important;
+}
+.header {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5rem;
+  color: #cc00ff;
+}
+
+.spaced-font {
+  letter-spacing: 0.5rem;
+}
+
+h5 {
+  width: 100%; 
+  text-align: center; 
+  border-bottom: 1px solid #000; 
+  line-height: 0.1em;
+  margin: 10px 0 20px; 
+} 
+
+h5 span { 
+   background:#fff; 
+   padding:0 10px; 
+}
