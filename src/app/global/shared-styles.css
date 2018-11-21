@@ -1,0 +1,18 @@
+.section {
+  background-color: #211e1f;
+}
+
+.header {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5rem;
+}
+
+.subheader {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 600;
+}
+
+.header-purple {
+  color: #cc00ff;
+}

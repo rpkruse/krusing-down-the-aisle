@@ -11,19 +11,13 @@ a.active {
   color: #cc00ff !important;
 }
 
-.navbar {
-  /* background: rgba(158, 70, 219, 0.6) !important; */
+/* .navbar {
   background: transparent !important;
-}
+} */
+
 
 h1 {
   font-size: xx-large !important;
-}
-.header {
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  text-transform: uppercase;
-  letter-spacing: 0.5rem;
-  color: #cc00ff;
 }
 
 .spaced-font {
