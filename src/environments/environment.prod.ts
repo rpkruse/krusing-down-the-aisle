@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  api: 'https://krusing-down-the-aisle.herokuapp.com/api/',
 };
