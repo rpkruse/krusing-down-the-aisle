@@ -5,6 +5,7 @@ export interface IPerson {
   id: number,
   firstName: string,
   lastName: string,
+  hasPlusone: boolean,
   foodId: number,
   plusOneId: number,
   hasAllergy: boolean,

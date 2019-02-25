@@ -1,7 +1,3 @@
-.section {
-  background-color: #211e1f;
-}
-
 .header {
   font-family: Georgia, 'Times New Roman', Times, serif;
   text-transform: uppercase;
@@ -15,4 +11,69 @@
 
 .header-purple {
   color: #cc00ff;
+}
+
+.icon{
+  display: inline;
+}
+
+.icon:hover{
+  cursor: pointer;
+}
+
+.icon-middle{
+  vertical-align: middle;
+}
+
+.icon-ex-sm{
+  width: 17px;
+}
+
+.icon-sm{
+  width: 20px;
+}
+
+.icon-sm-med {
+  width: 25px;
+}
+
+.icon-med{
+  width: 30px;
+}
+
+.icon-lrg{
+  width: 35px;
+}
+
+.loading {
+  position: relative;
+  font-size: 1.5em;
+  font-weight: bold;
+  font-style: italic;
+  text-align: left;
+}
+
+.loading:after {
+    display: inline-block;
+    position: absolute;
+    margin-left: .25em;
+    content: "";
+    vertical-align: bottom;
+    animation: ellipsis 1100ms infinite;
+    overflow: hidden;
+
+}
+
+@keyframes ellipsis {
+  25% {
+    content: ".";
+  }
+
+  50% {
+    content: "..";
+  }
+
+  75% {
+    content: "...";
+  }
 }

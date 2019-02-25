@@ -14,6 +14,8 @@ import { AppComponent } from './app.component';
 import { ApiService } from './services/services';
 import { StorageUtil } from './utils/utils'
 
+import { NgEnterDirective } from './directives/ng-enter.directive';
+
 import { 
   EventsComponent,
   HomeComponent,
@@ -34,7 +36,8 @@ from './components';
     EventsComponent,
     WeddingPartyComponent,
     TravelComponent,
-    RegistryComponent
+    RegistryComponent,
+    NgEnterDirective
   ],
   imports: [
     BrowserModule,
