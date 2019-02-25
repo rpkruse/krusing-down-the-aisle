@@ -13,6 +13,21 @@
   color: #cc00ff;
 }
 
+.img-sm {
+  max-width: 25%;
+  max-height: 25%;
+}
+
+.img-med {
+  max-width: 50%;
+  max-height: 50%;
+}
+
+.img-lrg {
+  max-width: 75%;
+  max-height: 75%;
+}
+
 .icon{
   display: inline;
 }
