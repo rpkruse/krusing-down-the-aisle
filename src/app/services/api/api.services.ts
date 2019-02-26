@@ -28,6 +28,14 @@ export class ApiService implements IApiService {
     return this._http.put(environment.api + path + '/' + id, entity) as Observable<T>;
   }
 
+  public postEntity<T>(path: string, entity: Object): Observable<T> {
+    return this._http.post(environment.api + path, entity) as Observable<T>;
+  }
+
+  public deleteEntity<T>(path: string, id: number): Observable<T> {
+    return this._http.delete(environment.api + path + '/' + id) as Observable<T>;
+  }
+
   public lookupRSVP (name: string): Observable<IPerson> {
     return this._http.get(environment.api + `Persons/Lookup?name=${name}`) as Observable<IPerson>;
   }

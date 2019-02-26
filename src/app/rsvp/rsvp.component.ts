@@ -17,16 +17,15 @@ export class RsvpComponent implements OnInit {
   searchError: string = "";
   person: IPerson;
 
-  foods: Observable<IFood[]>;
-
   constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _modal: NgbModal) { }
 
   ngOnInit() { 
+    this._dataShareService.person.subscribe(res => this.setUpdatedPerson(res));
     this.modalHandler = new ModalHandler(this._apiService, this._dataShareService);
+  }
 
-    //TODO: REMOVE BELOW BEFORE PUSHING
-    //this.nameSearchValue="test person";
-    //this.searchForPerson();
+  private setUpdatedPerson(person: IPerson): void {
+    this.person = person;
   }
 
   public searchForPerson(): void {
@@ -38,7 +37,7 @@ export class RsvpComponent implements OnInit {
     this.loading = true;
 
     let s: Subscription = this._apiService.lookupRSVP(this.nameSearchValue).subscribe(
-      d => this.person = d,
+      d => this._dataShareService.changePerson(d),
       err => {
         this.searchError = err.error['Error'][0];
         this.loading = false;
@@ -46,14 +45,40 @@ export class RsvpComponent implements OnInit {
       () => {
         s.unsubscribe();
         this.loading = false;
-        this.modalHandler.person = this.person;
       }
     )
   }
 
-  public resetPersonValues(): void {
-    this.modalHandler.person = this.person;
-    this.displayToaster("Changes", "Not Saved", IMessageType.Notification);
+  public addNewPlusOne(modal): void {
+    this.person.plusOne = {
+      id: -1,
+      firstName: "",
+      lastName: "",
+      foodId: 1,
+      food: this.modalHandler.foods[0],
+      personId: this.person.id,
+      person: null
+    }
+
+    this.modalHandler.addPlusOne = true;
+    this.openModal(modal);
+  }
+
+  public openModal(modal): void {
+    //this.modalHandler.person = this.person;
+    this._modal.open(modal, { size: 'lg', centered: true }).result.then((result) => {
+      //Close via save
+    }, (reason) => {
+      //Close via dismiss or click off
+      this.modalHandler.getPerson();
+      this.displayToaster("Changes", "Not Saved", IMessageType.Notification);
+    });
+  }
+
+  public openConfirmDeleteModal(modal): void {
+    this._modal.open(modal, { centered: true }).result.then((result) => {
+      this.modalHandler.deletePlusOne();
+    });
   }
 
   public clearSearch(): void {
@@ -61,12 +86,14 @@ export class RsvpComponent implements OnInit {
     this.nameSearchValue = "";
   }
 
-  public openModal(modal): void {
-    this.modalHandler.person = this.person;
-    this._modal.open(modal, { size: 'lg' });
+  public isSaveEnabled() {
+    return this.person.plusOne.firstName.trim().length > 0 && this.person.plusOne.lastName.trim().length > 0;
   }
-
   private displayToaster(message: string, action: string, mType: IMessageType): void {
     this._dataShareService.changeMessage({ message: message, action: action, mType: mType });
+  }
+
+  ngOnDestroy() {
+    this._dataShareService.changePerson(null);
   }
 }

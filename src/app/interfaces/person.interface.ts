@@ -7,7 +7,6 @@ export interface IPerson {
   lastName: string,
   hasPlusone: boolean,
   foodId: number,
-  plusOneId: number,
   hasAllergy: boolean,
   allergy: string,
   food: IFood,
