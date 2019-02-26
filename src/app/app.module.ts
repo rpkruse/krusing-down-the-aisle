@@ -46,8 +46,8 @@ from './components';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule,
-    NgProgressModule.forRoot(),
+    NgbModule.forRoot(),
+    NgProgressModule,
     NgProgressHttpModule,
     AngularFontAwesomeModule,
     BrowserAnimationsModule
