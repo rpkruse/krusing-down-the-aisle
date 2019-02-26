@@ -1,13 +1,13 @@
-import { IPerson, IFood, IPlusOne } from "../interfaces/interfaces";
+import { IPerson, IFood, IPlusOne, IMessageType } from "../interfaces/interfaces";
 import { Observable, Subscription } from "rxjs";
-import { ApiService } from "../services/services";
+import { ApiService, DataShareService } from "../services/services";
 
 export class ModalHandler {
   public foods: IFood[] = [];
 
   private _person: IPerson;
 
-  constructor(private _apiService: ApiService) {
+  constructor(private _apiService: ApiService, private _dataShareService: DataShareService) {
     let s: Subscription = this._apiService.getAllEntities<IFood>('Foods').subscribe(
       f => this.foods = f,
       err => console.log("Unable to load foods"),
@@ -21,18 +21,6 @@ export class ModalHandler {
       return;
     }
 
-    /*this._person = {
-      id: p.id,
-      firstName: p.firstName,
-      lastName: p.lastName,
-      hasPlusone: p.hasPlusone,
-      foodId: p.foodId,
-      allergy: p.allergy,
-      food: p.food,
-      hasAllergy: p.hasAllergy,
-      plusOne: p.plusOne,
-      plusOneId: p.plusOneId
-    };*/
     this._person = { ...p };
   }
   
@@ -50,14 +38,22 @@ export class ModalHandler {
   public savePersonChanges(): void {
     let s: Subscription = this._apiService.putEntity<IPerson>('Persons', this._person.id, this._person).subscribe(
       p => p = p,
-      err => console.log(err),
+      err => {
+        console.log(err);
+        this.displayToaster("Unable to save RSVP Info", "Successfully", IMessageType.Failure);
+      },
       () => {
         s.unsubscribe();
+        this.displayToaster("RSVP Info", "Saved Successfully", IMessageType.Success);
       }
     );
   }
 
   public getAllFoods(): Observable<IFood[]> {
     return this._apiService.getAllEntities<IFood>('Foods');
+  }
+
+  private displayToaster(message: string, action: string, mType: IMessageType): void {
+    this._dataShareService.changeMessage({message: message, action: action, mType: mType});
   }
 }

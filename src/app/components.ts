@@ -6,6 +6,8 @@ import { RsvpComponent } from './rsvp/rsvp.component';
 import { TravelComponent } from './travel/travel.component';
 import { WeddingPartyComponent } from './wedding-party/wedding-party.component';
 
+import { ToastComponent } from './global/toast/toast.component';
+
 export {
   EventsComponent,
   HomeComponent,
@@ -13,5 +15,6 @@ export {
   RegistryComponent,
   RsvpComponent,
   TravelComponent,
-  WeddingPartyComponent
+  WeddingPartyComponent,
+  ToastComponent
 };

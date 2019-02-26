@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgProgressModule } from '@ngx-progressbar/core';
@@ -11,7 +12,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { ApiService } from './services/services';
+import { ApiService, DataShareService } from './services/services';
 import { StorageUtil } from './utils/utils'
 
 import { NgEnterDirective } from './directives/ng-enter.directive';
@@ -23,7 +24,8 @@ import {
   RegistryComponent,
   RsvpComponent,
   TravelComponent,
-  WeddingPartyComponent
+  WeddingPartyComponent,
+  ToastComponent
  } 
 from './components';
 
@@ -37,6 +39,7 @@ from './components';
     WeddingPartyComponent,
     TravelComponent,
     RegistryComponent,
+    ToastComponent,
     NgEnterDirective
   ],
   imports: [
@@ -46,10 +49,12 @@ from './components';
     NgbModule,
     NgProgressModule.forRoot(),
     NgProgressHttpModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    BrowserAnimationsModule
   ],
   providers: [
     ApiService,
+    DataShareService,
     StorageUtil
   ],
   bootstrap: [AppComponent]

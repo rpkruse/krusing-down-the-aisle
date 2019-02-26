@@ -18,6 +18,11 @@
   max-height: 25%;
 }
 
+.img-sm-med {
+  max-width: 35%;
+  max-height: 35%;
+}
+
 .img-med {
   max-width: 50%;
   max-height: 50%;

@@ -3,9 +3,14 @@ import { IPlusOne } from './plusone.interface';
 import { IFood } from './food.interface';
 import { IWeddingParty } from './weddingparty.interface';
 
+import { IMessageOutput } from './messages/messageoutput';
+import { IMessageType } from './messages/messagetype.enum';
+
 export {
   IPerson,
   IPlusOne,
   IFood,
-  IWeddingParty
+  IWeddingParty,
+  IMessageOutput,
+  IMessageType
 }

@@ -1,17 +1,17 @@
 <div class="row mx-auto">
   <div class="col-md-6">
-    <div class="row" *ngFor="let b of bridalParty">
-      <div class="col border-bottom">
-        <img class="img-sm" [src]="b.picture" />
+    <div class="row border-bottom" *ngFor="let b of bridalParty">
+      <div class="col">
+        <img class="img-sm-med" [src]="b.picture" />
         <span class="d-inline subheader">{{ b.firstName }} {{ b.lastName }} ({{ b.spot }})</span>
         <p class="ml-5">{{ b.about }}</p>
       </div>
     </div>
   </div>
   <div class="col-md-6">
-    <div class="row" *ngFor="let g of groomsParty">
-      <div class="col border-bottom">
-        <img class="img-sm" [src]="g.picture" />
+    <div class="row border-bottom" *ngFor="let g of groomsParty">
+      <div class="col">
+        <img class="img-sm-med" [src]="g.picture" />
         <span class="d-inline subheader">{{ g.firstName }} {{ g.lastName }} ({{ g.spot }})</span>
         <p class="ml-5">{{ g.about }}</p>
       </div>

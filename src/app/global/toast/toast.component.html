@@ -1,0 +1,14 @@
+<div [@showState]="messageOut ? 'show' : 'hide'" style="display: block" (mouseenter)="hoverToKeepMessage(true)" (mouseleave)="hoverToKeepMessage(false)"
+  [ngSwitch]="this.messageLevel">
+
+  <div id="toast" [ngStyle]="{'background-color': 'green'}" *ngSwitchCase="IMessageType.Success">{{ messageToDisplay }}
+    <!-- <ngb-progressbar type="danger" height="5px" [max]="maxTime" [value]="timer"></ngb-progressbar> -->
+  </div>
+  <div id="toast" [ngStyle]="{'background-color': 'red'}" *ngSwitchCase="IMessageType.Failure">{{ messageToDisplay }}
+    <!-- <ngb-progressbar type="danger" height="5px" [value]="timer"></ngb-progressbar> -->
+  </div>
+  <div id="toast" [ngStyle]="{'background-color': 'blue'}" *ngSwitchCase="IMessageType.Notification">{{ messageToDisplay }}
+    <!-- <ngb-progressbar type="danger" height="5px" [value]="timer"></ngb-progressbar> -->
+  </div>
+  <div id="toast" *ngSwitchDefault>{{ this.messageLevel }} is not handled</div>
+</div>

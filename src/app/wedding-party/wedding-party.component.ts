@@ -20,13 +20,13 @@ export class WeddingPartyComponent implements OnInit {
     s = this._apiService.getAllEntities<IWeddingParty>('WeddingParty/BridalParty').subscribe(
       d => this.bridalParty = d,
       err => console.log('unable to get bridal party', err),
-      () => {s.unsubscribe(); console.log(this.bridalParty);}
+      () => s.unsubscribe()
     );
 
     j = this._apiService.getAllEntities<IWeddingParty>('WeddingParty/GroomsParty').subscribe(
       d => this.groomsParty = d,
       err => console.log('unable to get grooms party', err),
-      () => {j.unsubscribe(); console.log(this.groomsParty);}
+      () => j.unsubscribe()
     );
   }
 
