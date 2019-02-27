@@ -13,6 +13,10 @@
   color: #cc00ff;
 }
 
+.no-padding {
+  padding: 0;
+}
+
 .img-sm {
   max-width: 25%;
   max-height: 25%;

@@ -9,6 +9,7 @@ export interface IPerson {
   foodId: number,
   hasAllergy: boolean,
   allergy: string,
+  hasRSVPD: boolean,
   food: IFood,
   plusOne: IPlusOne
 }

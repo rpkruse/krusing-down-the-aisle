@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
@@ -23,6 +24,7 @@ import {
   PhotosComponent,
   RegistryComponent,
   RsvpComponent,
+  RsvpCreateComponent,
   TravelComponent,
   WeddingPartyComponent,
   ToastComponent
@@ -40,7 +42,8 @@ from './components';
     TravelComponent,
     RegistryComponent,
     ToastComponent,
-    NgEnterDirective
+    NgEnterDirective,
+    RsvpCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,8 @@ from './components';
     NgProgressModule,
     NgProgressHttpModule,
     AngularFontAwesomeModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
   providers: [
     ApiService,

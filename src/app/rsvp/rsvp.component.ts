@@ -46,7 +46,7 @@ export class RsvpComponent implements OnInit {
         s.unsubscribe();
         this.loading = false;
       }
-    )
+    );
   }
 
   public addNewPlusOne(modal): void {
@@ -54,6 +54,8 @@ export class RsvpComponent implements OnInit {
       id: -1,
       firstName: "",
       lastName: "",
+      hasAllergy: false,
+      allergy: "",
       foodId: 1,
       food: this.modalHandler.foods[0],
       personId: this.person.id,
