@@ -1,7 +1,11 @@
-<div class="row mx-auto">
+<div class="row mx-auto" *ngIf="loading">
+  <div class="col-12 loading text-center">Loading</div>
+</div>
+
+<div class="row mx-auto" *ngIf="!loading">
   <div class="col-lg-6">
     <div class="row border-bottom" *ngFor="let b of bridalParty">
-      <div class="col">
+      <div class="col-12">
         <img class="img-sm-med" [src]="b.picture" />
         <span class="d-inline subheader">{{ b.firstName }} {{ b.lastName }} ({{ b.spot }})</span>
         <p class="ml-5">{{ b.about }}</p>
@@ -10,9 +14,9 @@
   </div>
   <div class="col-lg-6">
     <div class="row border-bottom" *ngFor="let g of groomsParty">
-      <div class="col">
-        <img class="img-sm-med" [src]="g.picture" />
+      <div class="col-12">
         <span class="d-inline subheader">{{ g.firstName }} {{ g.lastName }} ({{ g.spot }})</span>
+        <img class="img-sm-med" [src]="g.picture" />
         <p class="ml-5">{{ g.about }}</p>
       </div>
     </div>
