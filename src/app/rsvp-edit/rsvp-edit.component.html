@@ -218,13 +218,13 @@
 <ng-template #editPlusOneNameModal let-c="close" let-d="dismiss">
   <div class="modal-header bg-light">
     <div class="col-12 text-center">
-      <h3>Edit +1 Dinner</h3>
+      <h3>Edit +1 Information</h3>
     </div>
   </div>
 
   <div class="modal-body">
     <div class="col-lg-12 mt-lg-0 mt-3">
-      <form [formGroup]="form" novalidate>
+      <form [formGroup]="plusOneForm">
         <div class="form-row">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -232,11 +232,11 @@
             </div>
             <input type="text" class="form-control" formControlName="firstNameEdit" placeholder="First Name"
               [value]="this.plusOne.firstName" (input)="this.plusOne.firstName = $event.target.value"
-              [ngClass]="{ 'is-valid': !form.controls['firstName'].errors, 'is-invalid': form.controls['firstName'].errors }" />
-            <div *ngIf="form.controls['firstName'].hasError('required')" class="invalid-feedback text-left">
+              [ngClass]="{ 'is-valid': !plusOneForm.controls['firstNameEdit'].errors, 'is-invalid': plusOneForm.controls['firstNameEdit'].errors }" />
+            <div *ngIf="plusOneForm.controls['firstNameEdit'].hasError('required')" class="invalid-feedback text-left">
               First Name cannot be blank
             </div>
-            <div *ngIf="form.controls['firstName'].hasError('pattern')" class="invalid-feedback text-left">
+            <div *ngIf="plusOneForm.controls['firstNameEdit'].hasError('pattern')" class="invalid-feedback text-left">
               First Name must start with a capital letter and only contain alphabetical characters
             </div>
           </div>
@@ -248,11 +248,11 @@
             </div>
             <input type="text" class="form-control" formControlName="lastNameEdit" placeholder="Last Name"
               [value]="this.plusOne.lastName" (input)="this.plusOne.lastName = $event.target.value"
-              [ngClass]="{ 'is-valid': !form.controls['lastName'].errors, 'is-invalid': form.controls['lastName'].errors }" />
-            <div *ngIf="form.controls['lastName'].hasError('required')" class="invalid-feedback text-left">
+              [ngClass]="{ 'is-valid': !plusOneForm.controls['lastNameEdit'].errors, 'is-invalid': plusOneForm.controls['lastNameEdit'].errors }" />
+            <div *ngIf="plusOneForm.controls['lastNameEdit'].hasError('required')" class="invalid-feedback text-left">
               Last Name cannot be blank
             </div>
-            <div *ngIf="form.controls['lastName'].hasError('pattern')" class="invalid-feedback text-left">
+            <div *ngIf="plusOneForm.controls['lastNameEdit'].hasError('pattern')" class="invalid-feedback text-left">
               Last Name must start with a capital letter and only contain alphabetical characters
             </div>
           </div>
@@ -265,8 +265,8 @@
             <input type="text" class="form-control" formControlName="allergyEdit"
               placeholder="Allergies (leave blank if not applicable)" [value]="this.plusOne.allergy"
               (input)="this.plusOne.allergy = $event.target.value"
-              [ngClass]="{ 'is-valid': !form.controls['allergy'].errors, 'is-invalid': form.controls['allergy'].errors }" />
-            <div *ngIf="form.controls['allergy'].hasError('pattern')" class="invalid-feedback text-left">
+              [ngClass]="{ 'is-valid': !plusOneForm.controls['allergyEdit'].errors, 'is-invalid': plusOneForm.controls['allergyEdit'].errors }" />
+            <div *ngIf="plusOneForm.controls['allergyEdit'].hasError('pattern')" class="invalid-feedback text-left">
               Allergies must only contain alphabetical characters
             </div>
           </div>
@@ -277,6 +277,6 @@
 
   <div class="modal-footer bg-light">
     <button type="button" class="btn btn-danger btn-sm" (click)="d()">Close</button>
-    <button type="button" class="btn btn-success btn-sm" [disabled]="!form.valid" (click)="c();">Save</button>
+    <button type="button" class="btn btn-success btn-sm" [disabled]="!plusOneForm.valid" (click)="c();">Save</button>
   </div>
 </ng-template>

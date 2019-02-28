@@ -40,4 +40,8 @@ export class AppComponent {
       text: "Gift Registry"
     }
   ]
+
+  mobileNavLinkClicked(): void {
+    this.isNavCollapsed = true;
+  }
 }

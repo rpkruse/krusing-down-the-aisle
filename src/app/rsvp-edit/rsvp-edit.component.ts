@@ -20,6 +20,7 @@ export class RsvpEditComponent implements OnInit {
   person: IPerson;
   plusOne: IPlusOne;
   form: FormGroup;
+  plusOneForm: FormGroup;
 
   constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _modal: NgbModal, private _fb: FormBuilder) { }
 
@@ -76,6 +77,10 @@ export class RsvpEditComponent implements OnInit {
     this.rsvpHandler.deletePlusOne(this.person);
   }
 
+  public closeEditPage(): void {
+    this._dataShareService.changePerson(null);
+  }
+
   public getFoodImg(isPlusOne: boolean): string {
     return isPlusOne ? this.plusOne.food.img : this.person.food.img;
   }
@@ -111,10 +116,13 @@ export class RsvpEditComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
       lastName: ['', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
       allergy: ['', Validators.pattern(/^([A-Za-z ,])*$/)],
+    });
+
+    this.plusOneForm = this._fb.group({
       firstNameEdit: ['Init', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
       lastNameEdit: ['Init', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
       allergyEdit: ['', Validators.pattern(/^([A-Za-z ,])*$/)]
-    });
+    })
   }
 
   ngOnDestroy() {

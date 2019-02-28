@@ -32,7 +32,7 @@
     <div class="container">
       <ul class="navbar-nav mr-auto nav-fill">
         <li class="nav-item" *ngFor="let page of this.pages">
-          <a class="nav-link text-hover text-dark font-weight-bold" routerLink="{{page.link}}" [routerLinkActive]="['active']">{{page.text}}</a>
+          <a class="nav-link text-hover text-dark font-weight-bold" routerLink="{{page.link}}" [routerLinkActive]="['active']" (click)="mobileNavLinkClicked()">{{page.text}}</a>
         </li>
       </ul>
     </div>

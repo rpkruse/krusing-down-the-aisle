@@ -1,5 +1,8 @@
 <div class="row mx-auto" *ngIf="!loading && !person">
   <div class="col-12 text-center">
+    <h4 class="subheading">RSVP Search</h4>
+  </div>
+  <div class="col-12 text-center mt-lg-4 mt-3">
     <div class="input-group mb-3">
       <input type="text" class="form-control" placeholder="Enter First and Last name" (ngEnter)="searchForPerson()"
         [value]="nameSearchValue" (input)="nameSearchValue = $event.target.value" [ngClass]="{ 'is-invalid': !person && searchError.length, 'is-valid': person && !searchError.length }" autofocus/>
