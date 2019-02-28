@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css', '../global/shared-styles.css']
 })
 export class HomeComponent implements OnInit {
+  isReadingMore: boolean = false;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  readMoreClicked(): void {
+    this.isReadingMore = !this.isReadingMore;
   }
 
 }
