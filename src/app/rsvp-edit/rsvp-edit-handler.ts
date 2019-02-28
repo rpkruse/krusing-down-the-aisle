@@ -1,9 +1,8 @@
 import { ApiService, DataShareService } from "../services/services";
 import { IPerson, IFood, IMessageType, IPlusOne } from "../interfaces/interfaces";
-import { Subscription, Observable } from "rxjs";
+import { Subscription } from "rxjs";
 
 export class RsvpEditHandler {
-  private person: IPerson;
   
   public foods: IFood[] = [];
 

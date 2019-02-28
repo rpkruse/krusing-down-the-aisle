@@ -1,8 +1,3 @@
-/* 
-  TODO:
-    1) Make the selection work with a field rather than the .person.plusOne itself (it will make handling changes much easier)
-    2) Rewrite almost all of this
-*/
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,10 +12,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./rsvp-edit.component.css', '../global/shared-styles.css']
 })
 export class RsvpEditComponent implements OnInit {
-  private dataShareSub: Subscription;
-
   @Input() foods: IFood[];
 
+  private dataShareSub: Subscription;
+  
   rsvpHandler: RsvpEditHandler;
   person: IPerson;
   plusOne: IPlusOne;

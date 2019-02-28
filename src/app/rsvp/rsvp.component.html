@@ -16,7 +16,7 @@
 <div class="loading text-center" *ngIf="loading">Loading</div>
 
 <div *ngIf="person && !person.hasRSVPD">
-  <app-rsvp-create></app-rsvp-create>
+  <app-rsvp-create [foods]="this.foods"></app-rsvp-create>
 </div>
 
 <div *ngIf="person && person.hasRSVPD">

@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./rsvp.component.css', '../global/shared-styles.css']
 })
 export class RsvpComponent implements OnInit {
+  private dataShareSub: Subscription;
+
   foods: IFood[] = [];
   loading: boolean = false;
   nameSearchValue: string = "";
@@ -19,11 +21,8 @@ export class RsvpComponent implements OnInit {
   constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _routeData: ActivatedRoute) { }
 
   ngOnInit() { 
-    this._dataShareService.person.subscribe(res => this.setUpdatedPerson(res));
+    this.dataShareSub = this._dataShareService.person.subscribe(res => this.setUpdatedPerson(res));
     this.foods = this._routeData.snapshot.data['foods'];
-
-    this.nameSearchValue = "test person5";
-    this.searchForPerson();
   }
 
   public searchForPerson(): void {
@@ -52,6 +51,8 @@ export class RsvpComponent implements OnInit {
   }
 
   private setUpdatedPerson(person: IPerson): void {
+    this.loading = false;
+
     if (!person)
       this.clearSearch();
 
@@ -60,5 +61,6 @@ export class RsvpComponent implements OnInit {
 
   ngOnDestroy() {
     this._dataShareService.changePerson(null);
+    this.dataShareSub.unsubscribe();
   }
 }

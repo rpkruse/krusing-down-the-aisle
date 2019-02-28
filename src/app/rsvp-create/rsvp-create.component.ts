@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { DataShareService, ApiService } from '../services/services';
-import { IPerson } from '../interfaces/interfaces';
+import { IPerson, IFood, IPlusOne } from '../interfaces/interfaces';
 import { RsvpHandler } from './rsvp-create-handler';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -12,67 +12,71 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./rsvp-create.component.css', '../global/shared-styles.css']
 })
 export class RsvpCreateComponent implements OnInit {
-  private dataShareSub: Subscription;
+  @Input() foods: IFood[];
 
-  private person: IPerson;
+  private dataShareSub: Subscription;
   private rsvpHandler: RsvpHandler;
-  private maxPage: number = 3; //4 pages max (Assuming they have +1)
+  private maxPage: number = 2; //3 pages max [0-2] (Assuming they have +1)
   
+  person: IPerson;
+  plusOne: IPlusOne;
+
+  plusOnePage: number = 1;
+
   form: FormGroup;
 
-  onPage: number = 1;
+  onPage: number = 0;
   backText: string = "Cancel";
   nextText: string = "Next";
 
-  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _fb: FormBuilder, private _router: Router) { 
-    this.createForm();
-  }
+  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _fb: FormBuilder, private _router: Router) { }
 
   ngOnInit() {
+    this.createForm();
     this.dataShareSub = this._dataShareService.person.subscribe(res => this.setPersonValue(res));
     this.rsvpHandler = new RsvpHandler(this._apiService,this._dataShareService, this._router);
   }
 
   public nextPage(): void {
-    this.onPage++;
-
-    if (this.onPage > this.maxPage) {
-      this.person.hasRSVPD = true;
-      this.rsvpHandler.saveRSVP();
+    if (this.onPage === this.plusOnePage) {
+      this.person.plusOne = this.plusOne;
     }
 
-    if (this.onPage == 2 && this.person.hasPlusone && !this.person.plusOne) //dirty
-      this.createEmptyPlusOne();
+    if (this.onPage === this.maxPage) {
+      this.rsvpHandler.saveRSVP(this.person);
+    }
 
-    this.nextText = this.onPage < this.maxPage ? "Next" : "Save";
-    this.backText = this.onPage > 1 ? "Back" : "Cancel";
+    this.onPage++;
+    this.setButtonTexts();
   }
 
   public lastPage(): void {
+    if (this.onPage <= 0)
+      this.goBackToSearch();
+
     this.onPage--;
-
-    if (this.onPage < 1)
-      this.clearSearch();
-    
-    //If the user has a plus one and hits back (leading us back to the +1 screen) and currently does not have one, create one
-    if (this.onPage == 2 && this.person.hasPlusone && !this.person.plusOne) //dirty
-      this.createEmptyPlusOne();
-    
-    this.nextText = this.onPage < this.maxPage ? "Next" : "Save";
-    this.backText = this.onPage > 1 ? "Back" : "Cancel";
-  }
-
-  public clearSearch(): void {
-    this.person = null;
-    this.onPage = 1;
-    this.maxPage = 3;
-    this._dataShareService.changePerson(this.person);
+    this.setButtonTexts();
   }
 
   public skipPlusOne(): void {
-    this.rsvpHandler.shouldAddPlusOne = false;
     this.person.plusOne = null;
-    this.nextPage();
+    this.createEmptyPlusOne(); //On skip reset our local +1
+    this.onPage++;
+    this.setButtonTexts();
+  }
+
+  public changeFoodSelection(foodIndexStr: string): void {
+    const foodIndex = parseInt(foodIndexStr);
+    
+    this.person.foodId = this.foods[foodIndex].id;
+    this.person.food = this.foods[foodIndex];
+  }
+
+  public changePlusOneFoodSelection(foodIndexStr: string): void {
+    const foodIndex = parseInt(foodIndexStr);
+
+    this.plusOne.foodId = this.foods[foodIndex].id;
+    this.plusOne.food = this.foods[foodIndex];
   }
 
   public enterKeyPressedOnAddPlusOne(): void {
@@ -80,25 +84,47 @@ export class RsvpCreateComponent implements OnInit {
       this.nextPage();
   }
 
-  private setPersonValue(person: IPerson): void {
-    this.person = person;
+  public getFoodImg(isPlusOne: boolean): string {
+    return isPlusOne? this.plusOne.food.img : this.person.food.img;
+  }
 
-    if (this.person !== null) 
-      this.maxPage = this.person.hasPlusone ? this.maxPage : this.maxPage - 1;
+  public getFoodDesc(isPlusOne: boolean): string {
+    return isPlusOne ? this.plusOne.food.desc : this.person.food.desc;
+  }
+
+  private setPersonValue(person: IPerson): void {
+    if (!person) return;
+
+    this.person = { ...person };
+
+    if (this.person.hasPlusone)
+      this.createEmptyPlusOne();      
+    else
+      this.maxPage--;
   }
 
   private createEmptyPlusOne(): void {
-    this.person.plusOne = {
+    this.plusOne = {
       id: 0,
       firstName: "",
       lastName: "",
       hasAllergy: false,
       allergy: "",
       foodId: 1,
-      food: this.rsvpHandler.foods[0],
+      food: this.foods[0],
       personId: this.person.id,
       person: this.person
     };
+  }
+
+  private goBackToSearch(): void {
+    this.person = null;
+    this._dataShareService.changePerson(this.person);
+  }
+
+  private setButtonTexts(): void {
+    this.nextText = this.onPage < this.maxPage ? "Next" : "Confirm";
+    this.backText = this.onPage > 0 ? "Back" : "Cancel";
   }
 
   private createForm(): void {
@@ -111,6 +137,5 @@ export class RsvpCreateComponent implements OnInit {
 
   ngOnDestroy() {
     this.dataShareSub.unsubscribe();
-    this._dataShareService.changePerson(null);
   }
 }
