@@ -1,3 +1,24 @@
-<div class="row mx-auto">
-  <div class="col-12 text-center">Photos works</div>
+<div class="row border-bottom mt-lg-0 mt-3" *ngFor="let image of images index as i">
+  <div class="col-4 no-padding" *ngIf="i%2==0">
+    <img class="img-scaled" [src]="image" />
+  </div>
+  <div class="col-8 no-padding" *ngIf="i%2==0">
+    <p class="ml-lg-3 ml-2">
+      I would not like them here or there.
+      I would not like them anywhere.
+      I do not like green eggs and ham.
+      I do not like them, Sam-I-am</p>
+  </div>
+
+  <div class="col-8 no-padding" *ngIf="i%2!=0">
+    <p class="ml-lg-0 ml-2">
+      That can't be my story. That's only a start.
+      I'll say that a ZEBRA was pulling that cart!
+      And that is a story that no one can beat,
+      When I say that I saw it on Mulberry Street
+    </p>
+  </div>
+  <div class="col-4 no-padding" *ngIf="i%2!=0">
+    <img class="img-scaled" [src]="image" />
+  </div>
 </div>
