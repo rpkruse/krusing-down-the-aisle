@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalHandler } from './modal-handler';
 import { ApiService, DataShareService } from '../services/services';
-import { IPerson, IFood, IMessageType } from '../interfaces/interfaces';
-import { Subscription, Observable } from 'rxjs';
+import { IPerson } from '../interfaces/interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-rsvp',
@@ -11,7 +10,6 @@ import { Subscription, Observable } from 'rxjs';
   styleUrls: ['./rsvp.component.css', '../global/shared-styles.css']
 })
 export class RsvpComponent implements OnInit {
-  modalHandler: ModalHandler;
   loading: boolean = false;
   nameSearchValue: string = "";
   searchError: string = "";
@@ -21,17 +19,13 @@ export class RsvpComponent implements OnInit {
 
   ngOnInit() { 
     this._dataShareService.person.subscribe(res => this.setUpdatedPerson(res));
-    this.modalHandler = new ModalHandler(this._apiService, this._dataShareService);
-  }
-
-  private setUpdatedPerson(person: IPerson): void {
-    this.person = person;
+    //this.nameSearchValue = "test person5";
+    //this.searchForPerson();
   }
 
   public searchForPerson(): void {
     if (!this.nameSearchValue)
       return;
-
 
     this.searchError = "";
     this.loading = true;
@@ -49,50 +43,16 @@ export class RsvpComponent implements OnInit {
     );
   }
 
-  public addNewPlusOne(modal): void {
-    this.person.plusOne = {
-      id: -1,
-      firstName: "",
-      lastName: "",
-      hasAllergy: false,
-      allergy: "",
-      foodId: 1,
-      food: this.modalHandler.foods[0],
-      personId: this.person.id,
-      person: null
-    }
-
-    this.modalHandler.addPlusOne = true;
-    this.openModal(modal);
-  }
-
-  public openModal(modal): void {
-    //this.modalHandler.person = this.person;
-    this._modal.open(modal, { size: 'lg', centered: true }).result.then((result) => {
-      //Close via save
-    }, (reason) => {
-      //Close via dismiss or click off
-      this.modalHandler.getPerson();
-      this.displayToaster("Changes", "Not Saved", IMessageType.Notification);
-    });
-  }
-
-  public openConfirmDeleteModal(modal): void {
-    this._modal.open(modal, { centered: true }).result.then((result) => {
-      this.modalHandler.deletePlusOne();
-    });
-  }
-
   public clearSearch(): void {
     this.person = null;
     this.nameSearchValue = "";
   }
 
-  public isSaveEnabled() {
-    return this.person.plusOne.firstName.trim().length > 0 && this.person.plusOne.lastName.trim().length > 0;
-  }
-  private displayToaster(message: string, action: string, mType: IMessageType): void {
-    this._dataShareService.changeMessage({ message: message, action: action, mType: mType });
+  private setUpdatedPerson(person: IPerson): void {
+    if (!person)
+      this.clearSearch();
+
+    this.person = person;
   }
 
   ngOnDestroy() {

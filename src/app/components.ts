@@ -4,6 +4,7 @@ import { PhotosComponent } from './photos/photos.component';
 import { RegistryComponent } from './registry/registry.component';
 import { RsvpComponent } from './rsvp/rsvp.component';
 import { RsvpCreateComponent } from './rsvp-create/rsvp-create.component';
+import { RsvpEditComponent } from './rsvp-edit/rsvp-edit.component';
 import { TravelComponent } from './travel/travel.component';
 import { WeddingPartyComponent } from './wedding-party/wedding-party.component';
 
@@ -16,6 +17,7 @@ export {
   RegistryComponent,
   RsvpComponent,
   RsvpCreateComponent,
+  RsvpEditComponent,
   TravelComponent,
   WeddingPartyComponent,
   ToastComponent

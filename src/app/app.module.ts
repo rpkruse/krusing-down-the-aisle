@@ -25,6 +25,7 @@ import {
   RegistryComponent,
   RsvpComponent,
   RsvpCreateComponent,
+  RsvpEditComponent,
   TravelComponent,
   WeddingPartyComponent,
   ToastComponent
@@ -43,7 +44,8 @@ from './components';
     RegistryComponent,
     ToastComponent,
     NgEnterDirective,
-    RsvpCreateComponent
+    RsvpCreateComponent,
+    RsvpEditComponent
   ],
   imports: [
     BrowserModule,

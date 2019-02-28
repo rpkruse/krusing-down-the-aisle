@@ -7,7 +7,6 @@ import {
   PhotosComponent,
   RegistryComponent,
   RsvpComponent,
-  RsvpCreateComponent,
   TravelComponent,
   WeddingPartyComponent
  } 
@@ -16,7 +15,7 @@ from './components';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'rsvp', component: RsvpCreateComponent },
+  { path: 'rsvp', component: RsvpComponent },
   { path: 'photos', component: PhotosComponent },
   { path: 'events', component: EventsComponent },
   { path: 'wedding-party', component: WeddingPartyComponent },
