@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService, DataShareService } from '../services/services';
-import { IPerson } from '../interfaces/interfaces';
+import { IPerson, IFood } from '../interfaces/interfaces';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,17 +10,20 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./rsvp.component.css', '../global/shared-styles.css']
 })
 export class RsvpComponent implements OnInit {
+  foods: IFood[] = [];
   loading: boolean = false;
   nameSearchValue: string = "";
   searchError: string = "";
   person: IPerson;
 
-  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _modal: NgbModal) { }
+  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _routeData: ActivatedRoute) { }
 
   ngOnInit() { 
     this._dataShareService.person.subscribe(res => this.setUpdatedPerson(res));
-    //this.nameSearchValue = "test person5";
-    //this.searchForPerson();
+    this.foods = this._routeData.snapshot.data['foods'];
+
+    this.nameSearchValue = "test person5";
+    this.searchForPerson();
   }
 
   public searchForPerson(): void {

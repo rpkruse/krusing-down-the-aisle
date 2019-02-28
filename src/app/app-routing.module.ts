@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { FoodResolver } from './services/services';
 
 import { 
   EventsComponent,
@@ -15,7 +16,7 @@ from './components';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'rsvp', component: RsvpComponent },
+  { path: 'rsvp', component: RsvpComponent, resolve: { foods: FoodResolver }},
   { path: 'photos', component: PhotosComponent },
   { path: 'events', component: EventsComponent },
   { path: 'wedding-party', component: WeddingPartyComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [ FoodResolver ]
 })
 export class AppRoutingModule { }

@@ -5,7 +5,7 @@ import { IPerson, IMessageOutput } from '../../interfaces/interfaces';
 
 @Injectable()
 export class DataShareService {
-  public person: Subject<IPerson> = new BehaviorSubject<IPerson>(null);
+  public person: BehaviorSubject<IPerson> = new BehaviorSubject<IPerson>(null);
   public message: Subject<IMessageOutput> = new BehaviorSubject<IMessageOutput>(null);
 
   public changePerson(person: IPerson): void {

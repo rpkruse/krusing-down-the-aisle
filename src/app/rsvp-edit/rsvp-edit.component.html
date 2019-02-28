@@ -1,14 +1,15 @@
 <div class="row text-center">
   <div class="col-12">
     <h4 class="subheading d-inline">Edit RSVP</h4>
-    <img class="icon icon-sm-med float-right d-inline" placement="left" ngbTooltip="Close" src="assets/icons/x_icon.png" (click)="closeEditPage()"/>
+    <img class="icon icon-sm-med float-right d-inline" placement="left" ngbTooltip="Close" src="assets/icons/x_icon.png"
+      (click)="closeEditPage()" />
   </div>
 </div>
 
 <div class="row mt-lg-4 mt-3 justify-content-between" *ngIf="person">
 
   <!-- Person -->
-  <div class="col-lg-12 text-center border bg-light">
+  <div class="col-12 text-center border bg-light">
     <div class="col-12">
       <span class="subheader">Your Information:</span>
     </div>
@@ -30,31 +31,31 @@
   </div>
 
   <!-- +1 -->
-  <div class="col-lg-12 text-center mt-3 border bg-light">
+  <div class="col-12 text-center mt-3 border bg-light">
     <div class="col-12">
       <span class="subheader">+1 Information:</span>
-      <button type="button" class="btn btn-sm btn-danger d-inline ml-3 ml-lg-2" (click)="rsvpHandler.deletePlusOne()" *ngIf="!createdNewPlusOne">Remove</button>
+      <button type="button" class="btn btn-sm btn-danger d-inline ml-3 ml-lg-2" (click)="this.deletePlusOne()"
+        *ngIf="person.plusOne">Remove</button>
     </div>
-    <div class="row mt-lg-4 mt-3" *ngIf="!createdNewPlusOne">
+    <div class="row mt-lg-4 mt-3" *ngIf="person.plusOne">
       <div class="col-12">
         <span class="subheader d-block"><b>Name:</b></span>
         {{ person.plusOne.firstName }} {{ person.plusOne.lastName }}
+        <button type="button" class="btn btn-link" (click)="openEditPlusOneModal(editPlusOneNameModal)">Edit</button>
       </div>
       <div class="col-12 mt-3">
         <span class="subheader d-block"><b>Food Selection:</b></span>
         {{ person.plusOne.food.name }}
-        <button type="button" class="btn btn-link" (click)="openEditPlusOneModal(editPlusOneModal)">Edit</button>
+        <button type="button" class="btn btn-link" (click)="openEditPlusOneModal(editPlusFoodModal)">Edit</button>
       </div>
       <div class="col-12 mt-3">
         <span class="subheader d-block"><b>Allergies:</b></span>
         {{ !person.plusOne.hasAllergy ? 'None' : person.plusOne.allergy }}
       </div>
-      <div class="col-12 mt-3 no-padding">
-      </div>
     </div>
-    <div class="row mt-lg-4 mt-3" *ngIf="createdNewPlusOne">
+    <div class="row mt-lg-4 mt-3" *ngIf="!person.plusOne">
       <div class="col mx-auto">
-        <button type="button" class="btn btn-info" (click)="openEditPlusOneModal(editPlusOneModal)">Add +1</button>
+        <button type="button" class="btn btn-info" (click)="openCreatePlusOneModal(createPlusOneModal)">Add +1</button>
       </div>
     </div>
   </div>
@@ -72,18 +73,17 @@
         <div class="input-group-prepend">
           <label class="input-group-text" for="food-p1-select">Select Dinner:</label>
         </div>
-        <select class="custom-select" id="food-p1-select"
-          (change)="this.rsvpHandler.changeFoodSelection($event.target.value)">
-          <option *ngFor="let food of rsvpHandler.foods index as i" [value]="i"
-            [selected]="food.name === rsvpHandler.person.food.name">{{ food.name }}</option>
+        <select class="custom-select" id="food-p1-select" (change)="this.changeFoodSelection($event.target.value)">
+          <option *ngFor="let food of this.foods index as i" [value]="i" [selected]="food.name === person.food.name">
+            {{ food.name }}</option>
         </select>
       </div>
       <div>
         <img class="img-med d-lg-none d-block mx-auto mb-3 mb-lg-4"
-          src="assets/pictures/food/{{ rsvpHandler.person.food.img }}" />
+          src="assets/pictures/food/{{ this.getFoodImg(false) }}" />
         <img class="img-sm-med d-none d-lg-block mx-auto mb-3 mb-lg-4"
-          src="assets/pictures/food/{{ rsvpHandler.person.food.img }}" />
-        {{ rsvpHandler.person.food.desc }}
+          src="assets/pictures/food/{{ this.getFoodImg(false) }}" />
+        {{ this.getFoodDesc(false) }}
       </div>
     </div>
   </div>
@@ -93,16 +93,16 @@
   </div>
 </ng-template>
 
-<ng-template #editPlusOneModal let-c="close" let-d="dismiss">
+<ng-template #createPlusOneModal let-c="close" let-d="dismiss">
   <div class="modal-header bg-light">
     <div class="col-12 text-center">
-      <h3>Create Plus One</h3>
+      <h3>Create +1</h3>
     </div>
   </div>
 
   <div class="modal-body">
     <div class="row">
-      <div class="col-lg-6 mb-lg-0 mb-3 text-left" *ngIf="createdNewPlusOne">
+      <div class="col-lg-6 mb-lg-0 mb-3 text-left">
         <form [formGroup]="form">
           <div class="form-row">
             <div class="input-group mb-3">
@@ -110,8 +110,7 @@
                 <span class="input-group-text">First Name:</span>
               </div>
               <input type="text" class="form-control" formControlName="firstName" placeholder="First Name"
-                [value]="this.person.plusOne.firstName" (input)="this.person.plusOne.firstName = $event.target.value"
-                (ngEnter)="enterKeyPressedOnAddPlusOne()"
+                [value]="this.plusOne.firstName" (input)="this.plusOne.firstName = $event.target.value"
                 [ngClass]="{ 'is-valid': !form.controls['firstName'].errors, 'is-invalid': form.controls['firstName'].errors }" />
               <div *ngIf="form.controls['firstName'].hasError('required')" class="invalid-feedback text-left">
                 First Name cannot be blank
@@ -127,8 +126,7 @@
                 <span class="input-group-text">Last Name:</span>
               </div>
               <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name"
-                [value]="this.person.plusOne.lastName" (input)="this.person.plusOne.lastName = $event.target.value"
-                (ngEnter)="enterKeyPressedOnAddPlusOne()"
+                [value]="this.plusOne.lastName" (input)="this.plusOne.lastName = $event.target.value"
                 [ngClass]="{ 'is-valid': !form.controls['lastName'].errors, 'is-invalid': form.controls['lastName'].errors }" />
               <div *ngIf="form.controls['lastName'].hasError('required')" class="invalid-feedback text-left">
                 Last Name cannot be blank
@@ -144,8 +142,8 @@
                 <span class="input-group-text">Allergies:</span>
               </div>
               <input type="text" class="form-control" formControlName="allergy"
-                placeholder="Allergies (leave blank if not applicable)" [value]="this.person.plusOne.allergy"
-                (input)="this.person.plusOne.allergy = $event.target.value" (ngEnter)="enterKeyPressedOnAddPlusOne()"
+                placeholder="Allergies (leave blank if not applicable)" [value]="this.plusOne.allergy"
+                (input)="this.plusOne.allergy = $event.target.value"
                 [ngClass]="{ 'is-valid': !form.controls['allergy'].errors, 'is-invalid': form.controls['allergy'].errors }" />
               <div *ngIf="form.controls['allergy'].hasError('pattern')" class="invalid-feedback text-left">
                 Allergies must only contain alphabetical characters
@@ -155,29 +153,130 @@
         </form>
       </div>
 
-      <div class="mt-lg-0 mt-3" [ngClass]="createdNewPlusOne ? 'col-lg-6' : 'col-12'">
+      <div class="col-lg-6">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <label class="input-group-text" for="food-p1-select">Select Dinner:</label>
           </div>
           <select class="custom-select" id="food-p1-select"
-            (change)="rsvpHandler.changePlusOneFoodSelection($event.target.value)">
-            <option *ngFor="let food of rsvpHandler.foods index as i" [value]="i"
-              [selected]=" food.name === rsvpHandler.person.plusOne.food.name">{{ food.name }}</option>
+            (change)="this.changePlusOneFoodSelection($event.target.value)">
+            <option *ngFor="let food of this.foods index as i" [value]="i"
+              [selected]=" food.name === this.plusOne.food.name">{{ food.name }}</option>
           </select>
         </div>
         <div>
           <img class="img-med d-lg-none d-block mx-auto mb-3 mb-lg-4"
-            src="assets/pictures/food/{{ rsvpHandler.getPlusOneFoodImage() }}" />
+            src="assets/pictures/food/{{ this.getFoodImg(true) }}" />
           <img class="img-sm-med d-none d-lg-block mx-auto mb-3 mb-lg-4"
-            src="assets/pictures/food/{{ rsvpHandler.getPlusOneFoodImage() }}" />
-          {{ rsvpHandler.getPlusOneFoodDesc() }}
+            src="assets/pictures/food/{{ this.getFoodImg(true) }}" />
+          {{ this.getFoodDesc(true) }}
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer bg-light">
     <button type="button" class="btn btn-danger btn-sm" (click)="d()">Close</button>
-    <button type="button" class="btn btn-success btn-sm" (click)="c();">Add</button>
+    <button type="button" class="btn btn-success btn-sm" [disabled]="!form.valid" (click)="c();">Add</button>
+  </div>
+</ng-template>
+
+<ng-template #editPlusFoodModal let-c="close" let-d="dismiss">
+  <div class="modal-header bg-light">
+    <div class="col-12 text-center">
+      <h3>Edit +1 Dinner</h3>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <div class="col-lg-12 mt-lg-0 mt-3">
+  
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="food-p1-select">Select Dinner:</label>
+        </div>
+        <select class="custom-select" id="food-p1-select" (change)="this.changePlusOneFoodSelection($event.target.value)">
+          <option *ngFor="let food of this.foods index as i" [value]="i"
+            [selected]=" food.name === this.plusOne.food.name">{{ food.name }}</option>
+        </select>
+      </div>
+      <div>
+        <img class="img-med d-lg-none d-block mx-auto mb-3 mb-lg-4"
+          src="assets/pictures/food/{{ this.getFoodImg(true) }}" />
+        <img class="img-sm-med d-none d-lg-block mx-auto mb-3 mb-lg-4"
+          src="assets/pictures/food/{{ this.getFoodImg(true) }}" />
+        {{ this.getFoodDesc(true) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer bg-light">
+    <button type="button" class="btn btn-danger btn-sm" (click)="d()">Close</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="c();">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #editPlusOneNameModal let-c="close" let-d="dismiss">
+  <div class="modal-header bg-light">
+    <div class="col-12 text-center">
+      <h3>Edit +1 Dinner</h3>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <div class="col-lg-12 mt-lg-0 mt-3">
+      <form [formGroup]="form" novalidate>
+        <div class="form-row">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">First Name:</span>
+            </div>
+            <input type="text" class="form-control" formControlName="firstNameEdit" placeholder="First Name"
+              [value]="this.plusOne.firstName" (input)="this.plusOne.firstName = $event.target.value"
+              [ngClass]="{ 'is-valid': !form.controls['firstName'].errors, 'is-invalid': form.controls['firstName'].errors }" />
+            <div *ngIf="form.controls['firstName'].hasError('required')" class="invalid-feedback text-left">
+              First Name cannot be blank
+            </div>
+            <div *ngIf="form.controls['firstName'].hasError('pattern')" class="invalid-feedback text-left">
+              First Name must start with a capital letter and only contain alphabetical characters
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Last Name:</span>
+            </div>
+            <input type="text" class="form-control" formControlName="lastNameEdit" placeholder="Last Name"
+              [value]="this.plusOne.lastName" (input)="this.plusOne.lastName = $event.target.value"
+              [ngClass]="{ 'is-valid': !form.controls['lastName'].errors, 'is-invalid': form.controls['lastName'].errors }" />
+            <div *ngIf="form.controls['lastName'].hasError('required')" class="invalid-feedback text-left">
+              Last Name cannot be blank
+            </div>
+            <div *ngIf="form.controls['lastName'].hasError('pattern')" class="invalid-feedback text-left">
+              Last Name must start with a capital letter and only contain alphabetical characters
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Allergies:</span>
+            </div>
+            <input type="text" class="form-control" formControlName="allergyEdit"
+              placeholder="Allergies (leave blank if not applicable)" [value]="this.plusOne.allergy"
+              (input)="this.plusOne.allergy = $event.target.value"
+              [ngClass]="{ 'is-valid': !form.controls['allergy'].errors, 'is-invalid': form.controls['allergy'].errors }" />
+            <div *ngIf="form.controls['allergy'].hasError('pattern')" class="invalid-feedback text-left">
+              Allergies must only contain alphabetical characters
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer bg-light">
+    <button type="button" class="btn btn-danger btn-sm" (click)="d()">Close</button>
+    <button type="button" class="btn btn-success btn-sm" [disabled]="!form.valid" (click)="c();">Save</button>
   </div>
 </ng-template>

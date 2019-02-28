@@ -3,12 +3,12 @@
     1) Make the selection work with a field rather than the .person.plusOne itself (it will make handling changes much easier)
     2) Rewrite almost all of this
 */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService, DataShareService } from '../services/services';
 import { RsvpEditHandler } from './rsvp-edit-handler';
-import { IPerson, IPlusOne } from '../interfaces/interfaces';
+import { IPerson, IPlusOne, IFood } from '../interfaces/interfaces';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,91 +19,106 @@ import { Subscription } from 'rxjs';
 export class RsvpEditComponent implements OnInit {
   private dataShareSub: Subscription;
 
+  @Input() foods: IFood[];
+
   rsvpHandler: RsvpEditHandler;
   person: IPerson;
+  plusOne: IPlusOne;
   form: FormGroup;
-  createdNewPlusOne: boolean = false;
-  selectedFoodIndex: number = 0;
 
-  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _modal: NgbModal, private _fb: FormBuilder) { 
-    this.createForm();
-  }
+  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _modal: NgbModal, private _fb: FormBuilder) { }
 
   ngOnInit() {
+    this.createForm();
     this.rsvpHandler = new RsvpEditHandler(this._apiService, this._dataShareService);
     this.dataShareSub = this._dataShareService.person.subscribe(res => this.setPersonValue(res));
   }
 
   public openEditPersonFood(modal): void {
-    this._modal.open(modal, { size: 'lg', centered: true}).result.then((r) => {
-      this.rsvpHandler.savePersonChanges();
-    }, (d) => {
-      this.rsvpHandler.setPersonValue(this.person);
+    this._modal.open(modal, { size: 'lg', centered: true}).result.then(
+    (save) => {
+      this.rsvpHandler.savePersonChanges(this.person);
+    }, (dismiss) => {
+      this.person = this._dataShareService.person.getValue();
+    });
+  }
+
+  public openCreatePlusOneModal(modal): void {
+    this.createEmptyPlusOne();
+    this._modal.open(modal, { size: 'lg', centered: true}).result.then(
+    (save) => {
+      this.rsvpHandler.postPlusOne(this.person, this.plusOne);
+    }, (dismiss) => {
+      this.person.plusOne = null;
     });
   }
 
   public openEditPlusOneModal(modal): void {
-    this._modal.open(modal, { size: 'lg', centered: true}).result.then((r) => {
-      if (this.createdNewPlusOne)
-        this.rsvpHandler.postPlusOne();
-      else
-        this.rsvpHandler.savePlusOneChanges();
-    }, (d) => {
-      this.resetSelectedFoodIndex();
+    this.createCopyOfPlusOne();
+    this._modal.open(modal, { size: 'lg', centered: true}).result.then(
+      (save) => {
+        this.rsvpHandler.savePlusOneChanges(this.person, this.plusOne);
+      }, (dismiss) => {
+        this.plusOne = null;
     });
   }
 
   public changeFoodSelection(foodIndexStr: string): void {
-    const index = parseInt(foodIndexStr);
-
-    this.selectedFoodIndex = index;
+    const foodIndex = parseInt(foodIndexStr);
+    
+    this.person.foodId = this.foods[foodIndex].id;
+    this.person.food = this.foods[foodIndex];
   }
 
-  public closeEditPage(): void {
-    this._dataShareService.changePerson(null);
+  public changePlusOneFoodSelection(foodIndexStr: string): void {
+    const foodIndex = parseInt(foodIndexStr);
+
+    this.plusOne.foodId = this.foods[foodIndex].id;
+    this.plusOne.food = this.foods[foodIndex];
+  }
+
+  public deletePlusOne(): void {
+    this.rsvpHandler.deletePlusOne(this.person);
+  }
+
+  public getFoodImg(isPlusOne: boolean): string {
+    return isPlusOne ? this.plusOne.food.img : this.person.food.img;
+  }
+
+  public getFoodDesc(isPlusOne: boolean): string {
+    return isPlusOne ? this.plusOne.food.desc : this.person.food.desc;
   }
 
   private setPersonValue(person: IPerson): void {
-    this.person = person;
-
-    if (!this.person) return;
-
-    if (this.person && this.person.hasPlusone && !this.person.plusOne) {
-      this.createEmptyPlusOne();
-    } else {
-      this.resetSelectedFoodIndex();
-      this.createdNewPlusOne = false;
-    }
-  }
-
-  private resetSelectedFoodIndex(): void {
-    this.selectedFoodIndex = this.person.plusOne.foodId-1;
-    if (this.selectedFoodIndex < 0) this.selectedFoodIndex = 0;
+    this.person = { ...person };
   }
 
   private createEmptyPlusOne(): void {
-    this.person.plusOne = {
+    this.plusOne = {
       id: 0,
       firstName: "",
       lastName: "",
-      hasAllergy: false,
-      allergy: "",
       foodId: 1,
-      food: this.rsvpHandler.foods[0],
+      food: this.foods[0],
+      allergy: "",
+      hasAllergy: false,
       personId: this.person.id,
       person: this.person
     };
+  }
 
-    this.createdNewPlusOne = true;
-
-    this.rsvpHandler.setPersonValue(this.person);
+  private createCopyOfPlusOne(): void {
+    this.plusOne = { ...this.person.plusOne };
   }
 
   private createForm(): void {
     this.form = this._fb.group({
       firstName: ['', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
       lastName: ['', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
-      allergy: ['', Validators.pattern(/^([A-Za-z ,])*$/)]
+      allergy: ['', Validators.pattern(/^([A-Za-z ,])*$/)],
+      firstNameEdit: ['Init', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
+      lastNameEdit: ['Init', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
+      allergyEdit: ['', Validators.pattern(/^([A-Za-z ,])*$/)]
     });
   }
 
