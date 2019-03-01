@@ -8,7 +8,8 @@ import { RsvpEditComponent } from './rsvp-edit/rsvp-edit.component';
 import { TravelComponent } from './travel/travel.component';
 import { WeddingPartyComponent } from './wedding-party/wedding-party.component';
 
-import { ToastComponent } from './global/toast/toast.component';
+import { FoodSelectorComponent } from './shared/food-selector/food-selector.component';
+import { ToastComponent } from './shared/toast/toast.component';
 
 export {
   EventsComponent,
@@ -20,5 +21,6 @@ export {
   RsvpEditComponent,
   TravelComponent,
   WeddingPartyComponent,
+  FoodSelectorComponent,
   ToastComponent
 };

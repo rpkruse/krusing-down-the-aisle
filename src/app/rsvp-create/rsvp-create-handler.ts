@@ -1,5 +1,5 @@
 import { ApiService, DataShareService } from "../services/services";
-import { IPerson, IMessageType, IPlusOne } from "../interfaces/interfaces";
+import { IPerson, IMessageType, IPlusOne, IFood } from "../interfaces/interfaces";
 import { Router } from '@angular/router';
 import { Subscription } from "rxjs";
 
@@ -24,11 +24,14 @@ export class RsvpHandler {
       personId: person.id
     }
 
+    const savedFood: IFood = { ...person.plusOne.food };
+
     let s: Subscription = this._apiService.postEntity<IPlusOne>('PlusOnes', poToSend).subscribe(
       d => person.plusOne = d,
       err => this.displayToasterAndLogError('Unable to', 'add plus one', IMessageType.Failure, err),
       () => {
         s.unsubscribe();
+        person.plusOne.food = savedFood;
         this.updateRSVP(person);
       }
     );

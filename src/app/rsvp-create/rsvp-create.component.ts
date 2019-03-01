@@ -65,16 +65,12 @@ export class RsvpCreateComponent implements OnInit {
     this.setButtonTexts();
   }
 
-  public changeFoodSelection(foodIndexStr: string): void {
-    const foodIndex = parseInt(foodIndexStr);
-    
+  public changeFoodSelection(foodIndex: number): void {
     this.person.foodId = this.foods[foodIndex].id;
     this.person.food = this.foods[foodIndex];
   }
 
-  public changePlusOneFoodSelection(foodIndexStr: string): void {
-    const foodIndex = parseInt(foodIndexStr);
-
+  public changePlusOneFoodSelection(foodIndex: string): void {
     this.plusOne.foodId = this.foods[foodIndex].id;
     this.plusOne.food = this.foods[foodIndex];
   }
@@ -82,14 +78,6 @@ export class RsvpCreateComponent implements OnInit {
   public enterKeyPressedOnAddPlusOne(): void {
     if (this.form.valid)
       this.nextPage();
-  }
-
-  public getFoodImg(isPlusOne: boolean): string {
-    return isPlusOne? this.plusOne.food.img : this.person.food.img;
-  }
-
-  public getFoodDesc(isPlusOne: boolean): string {
-    return isPlusOne ? this.plusOne.food.desc : this.person.food.desc;
   }
 
   private setPersonValue(person: IPerson): void {

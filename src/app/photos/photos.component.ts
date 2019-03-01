@@ -9,10 +9,10 @@ export class PhotosComponent implements OnInit {
   
   //This is temp
   images: string[] = [
-    "assets/pictures/food/chicken.png",
-    "assets/pictures/food/fish.png",
-    "assets/pictures/food/salad.png",
-    "assets/pictures/food/steak.png"
+    "https://docs.google.com/uc?id=1wHDeNtIwiZu_nKthQVzUIZUeIOnxuVNW", //chicken
+    "https://docs.google.com/uc?id=1IxRr-DKzzkEOQNG6KiCvr1l_G_jrz_OT", //fish
+    "https://docs.google.com/uc?id=1M4qOVuIFRT9PmmayamZP4w6dMOd3JDNm", //salad
+    "https://docs.google.com/uc?id=1PUSrvEt6ugP_RS4OEkDUhf1d4ufVOG1M" //steak
   ];
 
   constructor() { }

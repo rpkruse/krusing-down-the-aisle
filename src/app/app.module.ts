@@ -28,6 +28,7 @@ import {
   RsvpEditComponent,
   TravelComponent,
   WeddingPartyComponent,
+  FoodSelectorComponent,
   ToastComponent
  } 
 from './components';
@@ -45,7 +46,8 @@ from './components';
     ToastComponent,
     NgEnterDirective,
     RsvpCreateComponent,
-    RsvpEditComponent
+    RsvpEditComponent,
+    FoodSelectorComponent
   ],
   imports: [
     BrowserModule,

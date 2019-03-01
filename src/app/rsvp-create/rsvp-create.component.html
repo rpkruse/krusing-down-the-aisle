@@ -2,22 +2,7 @@
 <div class="row text-center" *ngIf="onPage == 0">
   <div class="col-12">
     <h4 class="mb-lg-5 mb-3">Select Food</h4>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="food-select">Select Dinner:</label>
-      </div>
-      <select class="custom-select" id="food-select" (change)="this.changeFoodSelection($event.target.value)">
-        <option *ngFor="let food of this.foods index as i" [value]="i" [selected]="food.name === person.food.name">
-          {{food.name }}</option>
-      </select>
-    </div>
-    <div>
-      <img class="img-med d-lg-none d-block mx-auto mb-3 mb-lg-4"
-        src="assets/pictures/food/{{ this.getFoodImg(false) }}" />
-      <img class="img-sm-med d-none d-lg-block mx-auto mb-3 mb-lg-4"
-        src="assets/pictures/food/{{ this.getFoodImg(false) }}" />
-      {{ this.getFoodDesc(false) }}
-    </div>
+    <app-food-selector [foods]="this.foods" [food]="this.person.food" (selectedFoodIndexOutput)="changeFoodSelection($event)"></app-food-selector>
   </div>
 </div>
 
@@ -83,23 +68,7 @@
       </div>
       <!-- Dinner Selection-->
       <div class="col-lg-6 mt-lg-0 mt-3">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="food-p1-select">Select Dinner:</label>
-          </div>
-          <select class="custom-select" id="food-p1-select"
-            (change)="this.changePlusOneFoodSelection($event.target.value)">
-            <option *ngFor="let food of this.foods index as i" [value]="i"
-              [selected]="food.name === this.plusOne.food.name">{{food.name }}</option>
-          </select>
-        </div>
-        <div>
-          <img class="img-med d-lg-none d-block mx-auto mb-3 mb-lg-4"
-            src="assets/pictures/food/{{ this.getFoodImg(true) }}" />
-          <img class="img-sm-med d-none d-lg-block mx-auto mb-3 mb-lg-4"
-            src="assets/pictures/food/{{ this.getFoodImg(true) }}" />
-          {{ this.getFoodDesc(false) }}
-        </div>
+        <app-food-selector [foods]="this.foods" [food]="this.plusOne.food" (selectedFoodIndexOutput)="changePlusOneFoodSelection($event)"></app-food-selector>
       </div>
     </div>
   </div>

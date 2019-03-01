@@ -9,7 +9,7 @@ import { Subscription, interval } from 'rxjs';
 @Component({
   selector: 'app-toast',
   templateUrl: './toast.component.html',
-  styleUrls: ['./toast.component.css', '../shared-styles.css'],
+  styleUrls: ['./toast.component.css'],
   animations: [
     trigger(
       'showState', [

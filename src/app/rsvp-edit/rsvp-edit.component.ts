@@ -35,7 +35,7 @@ export class RsvpEditComponent implements OnInit {
     (save) => {
       this.rsvpHandler.savePersonChanges(this.person);
     }, (dismiss) => {
-      this.person = this._dataShareService.person.getValue();
+      this.setPersonValue(this._dataShareService.person.getValue());
     });
   }
 
@@ -59,16 +59,12 @@ export class RsvpEditComponent implements OnInit {
     });
   }
 
-  public changeFoodSelection(foodIndexStr: string): void {
-    const foodIndex = parseInt(foodIndexStr);
-    
+  public changeFoodSelection(foodIndex: number): void {
     this.person.foodId = this.foods[foodIndex].id;
     this.person.food = this.foods[foodIndex];
   }
 
-  public changePlusOneFoodSelection(foodIndexStr: string): void {
-    const foodIndex = parseInt(foodIndexStr);
-
+  public changePlusOneFoodSelection(foodIndex: number): void {
     this.plusOne.foodId = this.foods[foodIndex].id;
     this.plusOne.food = this.foods[foodIndex];
   }
@@ -79,14 +75,6 @@ export class RsvpEditComponent implements OnInit {
 
   public closeEditPage(): void {
     this._dataShareService.changePerson(null);
-  }
-
-  public getFoodImg(isPlusOne: boolean): string {
-    return isPlusOne ? this.plusOne.food.img : this.person.food.img;
-  }
-
-  public getFoodDesc(isPlusOne: boolean): string {
-    return isPlusOne ? this.plusOne.food.desc : this.person.food.desc;
   }
 
   private setPersonValue(person: IPerson): void {
