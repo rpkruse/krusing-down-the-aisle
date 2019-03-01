@@ -12,59 +12,7 @@
     <div class="row">
       <div class="col-lg-6 mb-lg-0 mb-3 text-left">
         <!-- Name/Allergy Info-->
-        <form [formGroup]="form">
-          <!-- First Name-->
-          <div class="form-row">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">First Name:</span>
-              </div>
-              <input type="text" class="form-control" formControlName="firstName" placeholder="First Name"
-                [value]="this.plusOne.firstName" (input)="this.plusOne.firstName = $event.target.value"
-                (ngEnter)="enterKeyPressedOnAddPlusOne()"
-                [ngClass]="{ 'is-valid': !form.controls['firstName'].errors, 'is-invalid': form.controls['firstName'].errors }" />
-              <div *ngIf="form.controls['firstName'].hasError('required')" class="invalid-feedback text-left">
-                First Name cannot be blank
-              </div>
-              <div *ngIf="form.controls['firstName'].hasError('pattern')" class="invalid-feedback text-left">
-                First Name must start with a capital letter and only contain alphabetical characters
-              </div>
-            </div>
-          </div>
-          <!-- Last Name -->
-          <div class="form-row">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Last Name:</span>
-              </div>
-              <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name"
-                [value]="this.plusOne.lastName" (input)="this.plusOne.lastName = $event.target.value"
-                (ngEnter)="enterKeyPressedOnAddPlusOne()"
-                [ngClass]="{ 'is-valid': !form.controls['lastName'].errors, 'is-invalid': form.controls['lastName'].errors }" />
-              <div *ngIf="form.controls['lastName'].hasError('required')" class="invalid-feedback text-left">
-                Last Name cannot be blank
-              </div>
-              <div *ngIf="form.controls['lastName'].hasError('pattern')" class="invalid-feedback text-left">
-                Last Name must start with a capital letter and only contain alphabetical characters
-              </div>
-            </div>
-          </div>
-          <!-- Allergy -->
-          <div class="form-row">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Allergies:</span>
-              </div>
-              <input type="text" class="form-control" formControlName="allergy"
-                placeholder="Allergies (leave blank if not applicable)" [value]="this.plusOne.allergy"
-                (input)="this.plusOne.allergy = $event.target.value" (ngEnter)="enterKeyPressedOnAddPlusOne()"
-                [ngClass]="{ 'is-valid': !form.controls['allergy'].errors, 'is-invalid': form.controls['allergy'].errors }" />
-              <div *ngIf="form.controls['allergy'].hasError('pattern')" class="invalid-feedback text-left">
-                Allergies must only contain alphabetical characters
-              </div>
-            </div>
-          </div>
-        </form>
+        <app-information-editor [plusOne]="this.plusOne" (plusOneOutput)="handlePlusOneOutput($event)"></app-information-editor>
       </div>
       <!-- Dinner Selection-->
       <div class="col-lg-6 mt-lg-0 mt-3">
@@ -126,7 +74,7 @@
     <button type="button" class="btn btn-md btn-success d-inline float-right" (click)="nextPage()" *ngIf="!(onPage == plusOnePage && onPage != maxPage)">{{ nextText }}</button>
     <button type="button" class="btn btn-md btn-danger d-inline float-left" (click)="lastPage()">{{ backText }}</button>
 
-    <button type="button" class="btn btn-md btn-success d-inline float-right ml-lg-2 ml-1" (click)="nextPage()" [disabled]="!form.valid" *ngIf="onPage == plusOnePage && onPage != maxPage">{{ nextText }}</button>
-    <button type="button" class="btn btn-md btn-info d-inline float-right" (click)="skipPlusOne()" [disabled]="form.valid" *ngIf="onPage == plusOnePage && onPage != maxPage">Skip</button>
+    <button type="button" class="btn btn-md btn-success d-inline float-right ml-lg-2 ml-1" (click)="nextPage()" [disabled]="!canSavePlusOneChanges" *ngIf="onPage == plusOnePage && onPage != maxPage">{{ nextText }}</button>
+    <button type="button" class="btn btn-md btn-info d-inline float-right" (click)="skipPlusOne()" [disabled]="canSavePlusOneChanges" *ngIf="onPage == plusOnePage && onPage != maxPage">Skip</button>
   </div>
 </div>

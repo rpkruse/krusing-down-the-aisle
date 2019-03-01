@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService, DataShareService } from '../services/services';
 import { RsvpEditHandler } from './rsvp-edit-handler';
@@ -19,13 +18,12 @@ export class RsvpEditComponent implements OnInit {
   rsvpHandler: RsvpEditHandler;
   person: IPerson;
   plusOne: IPlusOne;
-  form: FormGroup;
-  plusOneForm: FormGroup;
 
-  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _modal: NgbModal, private _fb: FormBuilder) { }
+  canSavePlusOneChanges: boolean = true;
+
+  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _modal: NgbModal) { }
 
   ngOnInit() {
-    this.createForm();
     this.rsvpHandler = new RsvpEditHandler(this._apiService, this._dataShareService);
     this.dataShareSub = this._dataShareService.person.subscribe(res => this.setPersonValue(res));
   }
@@ -57,6 +55,16 @@ export class RsvpEditComponent implements OnInit {
       }, (dismiss) => {
         this.plusOne = null;
     });
+  }
+
+  public handlePlusOneOutput(plusOne: IPlusOne) {
+    if (!plusOne) {
+      this.canSavePlusOneChanges = false;
+      return;
+    }
+
+    this.canSavePlusOneChanges = true;
+    this.plusOne = plusOne;
   }
 
   public changeFoodSelection(foodIndex: number): void {
@@ -97,20 +105,6 @@ export class RsvpEditComponent implements OnInit {
 
   private createCopyOfPlusOne(): void {
     this.plusOne = { ...this.person.plusOne };
-  }
-
-  private createForm(): void {
-    this.form = this._fb.group({
-      firstName: ['', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
-      lastName: ['', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
-      allergy: ['', Validators.pattern(/^([A-Za-z ,])*$/)],
-    });
-
-    this.plusOneForm = this._fb.group({
-      firstNameEdit: ['Init', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
-      lastNameEdit: ['Init', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
-      allergyEdit: ['', Validators.pattern(/^([A-Za-z ,])*$/)]
-    })
   }
 
   ngOnDestroy() {

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { DataShareService, ApiService } from '../services/services';
 import { IPerson, IFood, IPlusOne } from '../interfaces/interfaces';
 import { RsvpHandler } from './rsvp-create-handler';
@@ -23,16 +22,14 @@ export class RsvpCreateComponent implements OnInit {
 
   plusOnePage: number = 1;
 
-  form: FormGroup;
-
   onPage: number = 0;
   backText: string = "Cancel";
   nextText: string = "Next";
+  canSavePlusOneChanges: boolean = false;
 
-  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _fb: FormBuilder, private _router: Router) { }
+  constructor(private _apiService: ApiService, private _dataShareService: DataShareService, private _router: Router) { }
 
   ngOnInit() {
-    this.createForm();
     this.dataShareSub = this._dataShareService.person.subscribe(res => this.setPersonValue(res));
     this.rsvpHandler = new RsvpHandler(this._apiService,this._dataShareService, this._router);
   }
@@ -75,9 +72,14 @@ export class RsvpCreateComponent implements OnInit {
     this.plusOne.food = this.foods[foodIndex];
   }
 
-  public enterKeyPressedOnAddPlusOne(): void {
-    if (this.form.valid)
-      this.nextPage();
+  public handlePlusOneOutput(plusOne: IPlusOne) {
+    if (!plusOne) {
+      this.canSavePlusOneChanges = false;
+      return;
+    }
+
+    this.canSavePlusOneChanges = true;
+    this.plusOne = plusOne;
   }
 
   private setPersonValue(person: IPerson): void {
@@ -113,14 +115,6 @@ export class RsvpCreateComponent implements OnInit {
   private setButtonTexts(): void {
     this.nextText = this.onPage < this.maxPage ? "Next" : "Confirm";
     this.backText = this.onPage > 0 ? "Back" : "Cancel";
-  }
-
-  private createForm(): void {
-    this.form = this._fb.group({
-      firstName: ['', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
-      lastName: ['', [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
-      allergy: ['', Validators.pattern(/^([A-Za-z ,])*$/)]
-    });
   }
 
   ngOnDestroy() {

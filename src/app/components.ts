@@ -9,6 +9,7 @@ import { TravelComponent } from './travel/travel.component';
 import { WeddingPartyComponent } from './wedding-party/wedding-party.component';
 
 import { FoodSelectorComponent } from './shared/food-selector/food-selector.component';
+import { InformationEditorComponent } from './shared/information-editor/information-editor.component';
 import { ToastComponent } from './shared/toast/toast.component';
 
 export {
@@ -22,5 +23,6 @@ export {
   TravelComponent,
   WeddingPartyComponent,
   FoodSelectorComponent,
+  InformationEditorComponent,
   ToastComponent
 };

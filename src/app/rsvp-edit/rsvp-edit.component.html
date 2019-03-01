@@ -31,7 +31,7 @@
   </div>
 
   <!-- +1 -->
-  <div class="col-12 text-center mt-3 border bg-light" *ngIf="this.person.hasPlusone && this.person.plusOne">
+  <div class="col-12 text-center mt-3 border bg-light" *ngIf="this.person.hasPlusone">
     <div class="col-12">
       <span class="subheader">+1 Information:</span>
       <button type="button" class="btn btn-sm btn-danger d-inline ml-3 ml-lg-2" (click)="this.deletePlusOne()"
@@ -86,54 +86,7 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-lg-6 mb-lg-0 mb-3 text-left">
-        <form [formGroup]="form">
-          <div class="form-row">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">First Name:</span>
-              </div>
-              <input type="text" class="form-control" formControlName="firstName" placeholder="First Name"
-                [value]="this.plusOne.firstName" (input)="this.plusOne.firstName = $event.target.value"
-                [ngClass]="{ 'is-valid': !form.controls['firstName'].errors, 'is-invalid': form.controls['firstName'].errors }" />
-              <div *ngIf="form.controls['firstName'].hasError('required')" class="invalid-feedback text-left">
-                First Name cannot be blank
-              </div>
-              <div *ngIf="form.controls['firstName'].hasError('pattern')" class="invalid-feedback text-left">
-                First Name must start with a capital letter and only contain alphabetical characters
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Last Name:</span>
-              </div>
-              <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name"
-                [value]="this.plusOne.lastName" (input)="this.plusOne.lastName = $event.target.value"
-                [ngClass]="{ 'is-valid': !form.controls['lastName'].errors, 'is-invalid': form.controls['lastName'].errors }" />
-              <div *ngIf="form.controls['lastName'].hasError('required')" class="invalid-feedback text-left">
-                Last Name cannot be blank
-              </div>
-              <div *ngIf="form.controls['lastName'].hasError('pattern')" class="invalid-feedback text-left">
-                Last Name must start with a capital letter and only contain alphabetical characters
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Allergies:</span>
-              </div>
-              <input type="text" class="form-control" formControlName="allergy"
-                placeholder="Allergies (leave blank if not applicable)" [value]="this.plusOne.allergy"
-                (input)="this.plusOne.allergy = $event.target.value"
-                [ngClass]="{ 'is-valid': !form.controls['allergy'].errors, 'is-invalid': form.controls['allergy'].errors }" />
-              <div *ngIf="form.controls['allergy'].hasError('pattern')" class="invalid-feedback text-left">
-                Allergies must only contain alphabetical characters
-              </div>
-            </div>
-          </div>
-        </form>
+        <app-information-editor [plusOne]="this.plusOne" (plusOneOutput)="handlePlusOneOutput($event)"></app-information-editor>
       </div>
 
       <div class="col-lg-6">
@@ -143,7 +96,7 @@
   </div>
   <div class="modal-footer bg-light">
     <button type="button" class="btn btn-danger btn-sm" (click)="d()">Close</button>
-    <button type="button" class="btn btn-success btn-sm" [disabled]="!form.valid" (click)="c();">Add</button>
+    <button type="button" class="btn btn-success btn-sm" [disabled]="!this.canSavePlusOneChanges" (click)="c();">Add</button>
   </div>
 </ng-template>
 
@@ -155,7 +108,7 @@
   </div>
 
   <div class="modal-body">
-      <app-food-selector [foods]="this.foods" [food]="this.plusOne.food" (selectedFoodIndexOutput)="changePlusOneFoodSelection($event)"></app-food-selector>
+    <app-food-selector [foods]="this.foods" [food]="this.plusOne.food" (selectedFoodIndexOutput)="changePlusOneFoodSelection($event)"></app-food-selector>
   </div>
 
   <div class="modal-footer bg-light">
@@ -172,60 +125,11 @@
   </div>
 
   <div class="modal-body">
-    <div class="col-lg-12 mt-lg-0 mt-3">
-      <form [formGroup]="plusOneForm">
-        <div class="form-row">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">First Name:</span>
-            </div>
-            <input type="text" class="form-control" formControlName="firstNameEdit" placeholder="First Name"
-              [value]="this.plusOne.firstName" (input)="this.plusOne.firstName = $event.target.value"
-              [ngClass]="{ 'is-valid': !plusOneForm.controls['firstNameEdit'].errors, 'is-invalid': plusOneForm.controls['firstNameEdit'].errors }" />
-            <div *ngIf="plusOneForm.controls['firstNameEdit'].hasError('required')" class="invalid-feedback text-left">
-              First Name cannot be blank
-            </div>
-            <div *ngIf="plusOneForm.controls['firstNameEdit'].hasError('pattern')" class="invalid-feedback text-left">
-              First Name must start with a capital letter and only contain alphabetical characters
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Last Name:</span>
-            </div>
-            <input type="text" class="form-control" formControlName="lastNameEdit" placeholder="Last Name"
-              [value]="this.plusOne.lastName" (input)="this.plusOne.lastName = $event.target.value"
-              [ngClass]="{ 'is-valid': !plusOneForm.controls['lastNameEdit'].errors, 'is-invalid': plusOneForm.controls['lastNameEdit'].errors }" />
-            <div *ngIf="plusOneForm.controls['lastNameEdit'].hasError('required')" class="invalid-feedback text-left">
-              Last Name cannot be blank
-            </div>
-            <div *ngIf="plusOneForm.controls['lastNameEdit'].hasError('pattern')" class="invalid-feedback text-left">
-              Last Name must start with a capital letter and only contain alphabetical characters
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Allergies:</span>
-            </div>
-            <input type="text" class="form-control" formControlName="allergyEdit"
-              placeholder="Allergies (leave blank if not applicable)" [value]="this.plusOne.allergy"
-              (input)="this.plusOne.allergy = $event.target.value"
-              [ngClass]="{ 'is-valid': !plusOneForm.controls['allergyEdit'].errors, 'is-invalid': plusOneForm.controls['allergyEdit'].errors }" />
-            <div *ngIf="plusOneForm.controls['allergyEdit'].hasError('pattern')" class="invalid-feedback text-left">
-              Allergies must only contain alphabetical characters
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
+    <app-information-editor [plusOne]="this.plusOne" (plusOneOutput)="handlePlusOneOutput($event)"></app-information-editor>
   </div>
 
   <div class="modal-footer bg-light">
     <button type="button" class="btn btn-danger btn-sm" (click)="d()">Close</button>
-    <button type="button" class="btn btn-success btn-sm" [disabled]="!plusOneForm.valid" (click)="c();">Save</button>
+    <button type="button" class="btn btn-success btn-sm" [disabled]="!canSavePlusOneChanges" (click)="c();">Save</button>
   </div>
 </ng-template>
