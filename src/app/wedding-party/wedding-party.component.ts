@@ -9,12 +9,15 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./wedding-party.component.css', '../global/shared-styles.css']
 })
 export class WeddingPartyComponent implements OnInit {
-  private pullCount: number = 0;
+  private pullCount: number = 0; //temp
 
-  bridalParty:IWeddingParty[] = [];
+  wholeParty: IWeddingParty[] = []; //temp
+
+  bridalParty: IWeddingParty[] = [];
   groomsParty: IWeddingParty[] = [];
 
   loading: boolean = true;
+  viewNumber: number = 1; //temp
 
   constructor(private _apiService: ApiService) { }
 
@@ -28,6 +31,8 @@ export class WeddingPartyComponent implements OnInit {
         s.unsubscribe();
         this.pullCount++;
         this.loading = this.pullCount != 2;
+
+        if (!this.loading) this.setWeddingParty();
       }
     );
 
@@ -38,8 +43,24 @@ export class WeddingPartyComponent implements OnInit {
         j.unsubscribe();
         this.pullCount++;
         this.loading = this.pullCount != 2;
+
+        if (!this.loading) this.setWeddingParty();
       }
     );
+  }
+
+  public setView(viewNumber: number): void {
+    this.viewNumber = viewNumber;
+  }
+
+  //THIS IS TEMP ONLY FOR VIEW TWO THIS WOULD BE DONE IN THE BACKEND
+  private setWeddingParty(): void {
+    const len = this.bridalParty.length;
+
+    for(let i=0; i < len; i++) {
+      this.wholeParty.push(this.bridalParty[i]);
+      this.wholeParty.push(this.groomsParty[i]);
+    }
   }
 
 }

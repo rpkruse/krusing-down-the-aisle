@@ -23,9 +23,6 @@ export class RsvpComponent implements OnInit {
   ngOnInit() { 
     this.dataShareSub = this._dataShareService.person.subscribe(res => this.setUpdatedPerson(res));
     this.foods = this._routeData.snapshot.data['foods'];
-
-    this.nameSearchValue = "test person4";
-    this.searchForPerson();
   }
 
   public searchForPerson(): void {

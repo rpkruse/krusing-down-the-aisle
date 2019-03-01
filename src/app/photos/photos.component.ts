@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/services';
+import { Observable } from 'rxjs';
+import { IPhoto } from '../interfaces/interfaces';
 
 @Component({
   selector: 'app-photos',
@@ -7,16 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PhotosComponent implements OnInit {
   
-  //This is temp
-  images: string[] = [
-    "https://docs.google.com/uc?id=1wHDeNtIwiZu_nKthQVzUIZUeIOnxuVNW", //chicken
-    "https://docs.google.com/uc?id=1IxRr-DKzzkEOQNG6KiCvr1l_G_jrz_OT", //fish
-    "https://docs.google.com/uc?id=1M4qOVuIFRT9PmmayamZP4w6dMOd3JDNm", //salad
-    "https://docs.google.com/uc?id=1PUSrvEt6ugP_RS4OEkDUhf1d4ufVOG1M" //steak
-  ];
+  photos: Observable<IPhoto[]>; 
 
-  constructor() { }
+  constructor(private _apiService: ApiService) { }
 
-  ngOnInit() { }
-
+  ngOnInit() { 
+    this.photos = this._apiService.getAllEntities<IPhoto>('Photos');
+  }
 }
