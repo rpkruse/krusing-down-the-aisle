@@ -1,50 +1,50 @@
 <ng-progress [thick]="true" color="red" [spinner]="false"></ng-progress>
+<p-toast [style]="{marginTop: '10px'}" position="top-center" baseZIndex="1021"></p-toast>
 
 <div class="container mt-1">
-  <div class="row">
-    <div class="col-12 mx-auto">
-      <div class="row">
-        <div class="col-12 text-center header header-purple mx-auto">
-          <h1>Sarah Joy</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 col-12 text-center mx-auto spaced-font">
-          <h5><span>AND</span></h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 text-center header header-purple mx-auto">
-          <h1>Ryan Patrick</h1>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-12 mx-auto">
+			<div class="row">
+				<div class="col-12 text-center header header-purple mx-auto">
+					<h1>Sarah Joy</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-12 text-center mx-auto spaced-font">
+					<h5><span>AND</span></h5>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 text-center header header-purple mx-auto">
+					<h1>Ryan Patrick</h1>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <nav class="navbar sticky-top navbar-expand-md navbar-light bg-light">
-  <button class="navbar-toggler hidden-sm-up" type="button" (click)="isNavCollapsed = !isNavCollapsed" aria-controls="navbarSupportedContent"
-    [attr.aria-expanded]="!isNavCollapsed" aria-label="Toggle Navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+	<button class="navbar-toggler hidden-sm-up" type="button" (click)="isNavCollapsed = !isNavCollapsed"
+		aria-controls="navbarSupportedContent" [attr.aria-expanded]="!isNavCollapsed" aria-label="Toggle Navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
 
-  <div [ngbCollapse]="isNavCollapsed" class="collapse navbar-collapse">
-    <div class="container">
-      <ul class="navbar-nav mr-auto nav-fill">
-        <li class="nav-item" *ngFor="let page of this.pages">
-          <a class="nav-link text-hover text-dark font-weight-bold" routerLink="{{page.link}}" [routerLinkActive]="['active']" (click)="mobileNavLinkClicked()">{{page.text}}</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+	<div [ngbCollapse]="isNavCollapsed" class="collapse navbar-collapse">
+		<div class="container">
+			<ul class="navbar-nav mr-auto nav-fill">
+				<li class="nav-item" *ngFor="let page of this.pages">
+					<a class="nav-link text-hover text-dark font-weight-bold" routerLink="{{page.link}}"
+						[routerLinkActive]="['active']" (click)="mobileNavLinkClicked()">{{page.text}}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
 </nav>
-<!-- <hr> -->
 
 <div class="container">
-  <div class="row">
-    <div class="col-12 mb-3 mt-lg-5 mt-3">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-  <app-toast></app-toast>
+	<div class="row">
+		<div class="col-12 mb-3 mt-lg-5 mt-3">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
 </div>

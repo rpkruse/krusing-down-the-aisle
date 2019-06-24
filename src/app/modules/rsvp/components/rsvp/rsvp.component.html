@@ -1,0 +1,29 @@
+<div class="row mx-auto" *ngIf="!loading && !person">
+  <div class="col-12 text-center">
+    <h4 class="subheading">RSVP Search</h4>
+  </div>
+  <div class="col-12 text-center mt-lg-4 mt-3">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Enter First and Last name" (ngEnter)="searchForPerson()"
+        [value]="nameSearchValue" (input)="nameSearchValue = $event.target.value"
+        [ngClass]="{ 'is-invalid': !person && searchError.length, 'is-valid': person && !searchError.length }"
+        autofocus />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" (click)="searchForPerson()">Search</button>
+      </div>
+      <div class="invalid-feedback text-left">
+        {{ searchError }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading text-center" *ngIf="loading">Loading</div>
+
+<div *ngIf="person && !person.hasRSVPD">
+  <app-rsvp-create [foods]="(this.foods | async)"></app-rsvp-create>
+</div>
+
+<div *ngIf="person && person.hasRSVPD">
+  <app-rsvp-edit [foods]="(this.foods | async)"></app-rsvp-edit>
+</div>

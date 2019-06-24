@@ -1,32 +1,53 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FoodResolver } from './services/services';
-
-import { 
-  EventsComponent,
-  HomeComponent,
-  PhotosComponent,
-  RegistryComponent,
-  RsvpComponent,
-  TravelComponent,
-  WeddingPartyComponent
- } 
-from './components';
+import { Constants } from './shared-module/infrastructure';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'rsvp', component: RsvpComponent, resolve: { foods: FoodResolver }},
-  { path: 'photos', component: PhotosComponent },
-  { path: 'events', component: EventsComponent },
-  { path: 'wedding-party', component: WeddingPartyComponent },
-  { path: 'travel', component: TravelComponent },
-  { path: 'registry', component: RegistryComponent }
+  {
+    path: Constants.uiRoutes.home,
+    loadChildren: './modules/home/home.module#HomeModule'
+  },
+  {
+    path: Constants.uiRoutes.rsvp,
+    loadChildren: './modules/rsvp/rsvp.module#RsvpModule'
+  },
+  {
+    path: Constants.uiRoutes.pictures,
+    loadChildren: './modules/pictures/pictures.module#PicturesModule'
+  },
+  {
+    path: Constants.uiRoutes.events,
+    loadChildren: './modules/events/events.module#EventsModule'
+  },
+  {
+    path: Constants.uiRoutes.weddingParty,
+    loadChildren: './modules/wedding-party/wedding-party.module#WeddingPartyModule'
+  },
+  {
+    path: Constants.uiRoutes.travel,
+    loadChildren: './modules/travel/travel.module#TravelModule'
+  },
+  {
+    path: Constants.uiRoutes.registry,
+    loadChildren: './modules/registry/registry.module#RegistryModule'
+  },
+  {
+    path: Constants.uiRoutes.empty, redirectTo: 'home', pathMatch: 'full'
+  },
+  {
+    path: '**', redirectTo: 'home', pathMatch: 'full'
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [ FoodResolver ]
+  imports: [
+    RouterModule.forRoot(routes,
+      {
+        anchorScrolling: 'enabled',
+        onSameUrlNavigation: 'reload',
+        scrollPositionRestoration: 'enabled'
+      })
+  ],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

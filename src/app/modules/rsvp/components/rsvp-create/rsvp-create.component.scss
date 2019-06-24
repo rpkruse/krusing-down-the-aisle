@@ -1,0 +1,13 @@
+// :host::ng-deep .ui-steps .ui-steps-item {
+//   width: 33%;
+// }
+
+:host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(2),
+:host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(2) ~ li {
+  width: 50%;
+}
+
+:host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(3),
+:host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(3) ~ li {
+  width: 33%;
+}

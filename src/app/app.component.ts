@@ -1,43 +1,43 @@
 import { Component } from '@angular/core';
+import { Constants } from './shared-module/infrastructure';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css', './global/shared-styles.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'krusing-down-the-aisle';
-
   isNavCollapsed: boolean = true;
 
   pages: any = [
     {
-      link: "home",
-      text: "Home"
+      link: Constants.uiRoutes.home,
+      text: 'Home'
     },
     {
-      link: "rsvp",
-      text: "RSVP"
+      link: Constants.uiRoutes.rsvp,
+      text: 'RSVP'
     },
     {
-      link: "photos",
-      text: "Photos"
+      link: Constants.uiRoutes.pictures,
+      text: 'Photos'
     },
     {
-      link: "events",
-      text: "Events"
+      link: Constants.uiRoutes.events,
+      text: 'Events'
     },
     {
-      link: "wedding-party",
-      text: "Wedding Party"
+      link: Constants.uiRoutes.weddingParty,
+      text: 'Wedding Party'
     },
     {
-      link: "travel",
-      text: "Travel"
+      link: Constants.uiRoutes.travel,
+      text: 'Travel'
     },
     {
-      link: "registry",
-      text: "Gift Registry"
+      link: Constants.uiRoutes.registry,
+      text: 'Gift Registry'
     }
   ]
 

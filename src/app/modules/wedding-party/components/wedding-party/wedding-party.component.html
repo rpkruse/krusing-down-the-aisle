@@ -1,0 +1,35 @@
+<div class="row mx-auto" *ngIf="loading">
+  <div class="col-12 loading text-center">Loading</div>
+</div>
+
+<div *ngIf="!loading && this.wholeParty.length">
+  <div class="row mt-lg-0 mt-3" [ngClass]="i != wholeParty.length-1 ? 'border-bottom' : ''" *ngFor="let p of wholeParty index as i">
+    <div class="col no-padding" *ngIf="i%2==0">
+      <img class="img-scaled" [src]="p.picture" />
+    </div>
+    <div class="col-lg-11 col-md-10 col-sm-9 col-8 no-padding" *ngIf="i%2==0">
+      <div class="col-12">
+        <span class="d-inline subheader text-break">{{ p.firstName }} {{ p.lastName }} ({{ p.spot }})</span>
+      </div>
+      <div class="col-12">
+        <p class="ml-lg-3 ml-2">
+          {{ p.about }}
+        </p>
+      </div>
+    </div>
+
+    <div class="col-lg-11 col-md-10 col-sm-9 col-8 no-padding text-sm-right text-xs-left" *ngIf="i%2!=0">
+      <div class="col-12">
+        <span class="d-inline subheader text-break">{{ p.firstName }} {{ p.lastName }} ({{ p.spot }})</span>
+      </div>
+      <div class="col-12">
+        <p class="ml-lg-3 ml-2">
+          {{ p.about }}
+        </p>
+      </div>
+    </div>
+    <div class="col no-padding" *ngIf="i%2!=0">
+      <img class="img-scaled" [src]="p.picture" />
+    </div>
+  </div>
+</div>

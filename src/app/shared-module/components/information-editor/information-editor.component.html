@@ -1,0 +1,33 @@
+<form [formGroup]="infoForm">
+  <!-- FN -->
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">First Name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" [value]="infoForm.controls['firstName'].value"
+      (input)="checkFormValidity()" [ngClass]="getInputValidationClass('firstName')" />
+      <div *ngIf="inputHasError('firstName', 'required')" class="invalid-feedback text-left">First name cannot be blank</div>
+      <div *ngIf="inputHasError('firstName', 'pattern')" class="invalid-feedback text-left">First Name must start with a capital letter and only contain alphabetical characters</div>
+    </div>
+  </div>
+
+  <!-- LN -->
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Last Name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name" [value]="infoForm.controls['lastName'].value"
+      (input)="checkFormValidity()" [ngClass]="getInputValidationClass('lastName')" />
+      <div *ngIf="inputHasError('lastName', 'required')" class="invalid-feedback text-left">Last name cannot be blank</div>
+      <div *ngIf="inputHasError('lastName', 'pattern')" class="invalid-feedback text-left">Last Name must start with a capital letter and only contain alphabetical characters</div>
+    </div>
+  </div>
+
+  <!-- Allergy -->
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Allergies:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" formControlName="allergy" placeholder="Allergies (leave blank if not applicable)" [value]="infoForm.controls['allergy'].value"
+      (input)="checkFormValidity()" [ngClass]="getInputValidationClass('allergy')" />
+      <div *ngIf="inputHasError('allergy', 'pattern')" class="invalid-feedback text-left">Allergies must only contain alphabetical characters</div>
+    </div>
+  </div>
+</form>

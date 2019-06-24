@@ -1,0 +1,131 @@
+<div class="row text-center">
+  <div class="col-12">
+    <h4 class="subheading d-inline">Edit RSVP</h4>
+    <span class="float-right clickable" placement="left" ngbTooltip="Close" (click)="closeEditPage()">&#10005;</span>
+  </div>
+</div>
+
+<div class="row mt-lg-4 mt-3 justify-content-between" *ngIf="person">
+  <!-- Person -->
+  <div class="col-12 text-center border bg-light">
+    <div class="col-12">
+      <span class="subheader">Your Information:</span>
+    </div>
+    <div class="row mt-lg-4 mt-3">
+      <div class="col-12">
+        <span class="subheader d-block"><b>Name:</b></span>
+        {{ person.firstName }} {{ person.lastName }}
+      </div>
+      <div class="col-12 mt-3">
+        <span class="subheader d-block"><b>Food Selection:</b></span>
+        {{ person.food.name }}
+        <button type="button" class="btn btn-link" (click)="openEditPersonFood(editPersonFoodModal)">Edit</button>
+      </div>
+      <div class="col-12 mt-3">
+        <span class="subheader d-block"><b>Allergies:</b></span>
+        {{ !person.hasAllergy ? 'None' : person.allergy }}
+      </div>
+    </div>
+  </div>
+
+  <!-- +1 -->
+  <div class="col-12 text-center mt-3 border bg-light" *ngIf="this.person.hasPlusone">
+    <div class="col-12">
+      <span class="subheader">+1 Information:</span>
+      <button type="button" class="btn btn-sm btn-danger d-inline ml-3 ml-lg-2" (click)="this.deletePlusOne()" *ngIf="person.plusOne">Remove</button>
+    </div>
+    <div class="row mt-lg-4 mt-3" *ngIf="person.plusOne">
+      <div class="col-12">
+        <span class="subheader d-block"><b>Name:</b></span>
+        {{ person.plusOne.firstName }} {{ person.plusOne.lastName }}
+        <button type="button" class="btn btn-link" (click)="openEditPlusOneModal(editPlusOneNameModal)">Edit</button>
+      </div>
+      <div class="col-12 mt-3">
+        <span class="subheader d-block"><b>Food Selection:</b></span>
+        {{ person.plusOne.food.name }}
+        <button type="button" class="btn btn-link" (click)="openEditPlusOneModal(editPlusFoodModal)">Edit</button>
+      </div>
+      <div class="col-12 mt-3">
+        <span class="subheader d-block"><b>Allergies:</b></span>
+        {{ !person.plusOne.hasAllergy ? 'None' : person.plusOne.allergy }}
+      </div>
+    </div>
+    <div class="row mt-lg-4 mt-3" *ngIf="!person.plusOne">
+      <div class="col mx-auto">
+        <button type="button" class="btn btn-info" (click)="openCreatePlusOneModal(createPlusOneModal)">Add +1</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #editPersonFoodModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Dinner</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <app-food-selector [foods]="this.foods" [food]="this.person.food" (selectedFoodIndexOutput)="changeFoodSelection($event)"></app-food-selector>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-danger btn-sm" (click)="modal.dismiss()">Close</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="modal.close()">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #createPlusOneModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add +1</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div class="row">
+          <div class="col-lg-6 mb-lg-0 mb-3 text-left">
+            <app-information-editor [plusOne]="this.plusOne" (plusOneOutput)="handlePlusOneOutput($event)"></app-information-editor>
+          </div>
+
+          <div class="col-lg-6">
+            <app-food-selector [foods]="this.foods" [food]="this.plusOne.food" (selectedFoodIndexOutput)="changePlusOneFoodSelection($event)"></app-food-selector>
+          </div>
+        </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-danger btn-sm" (click)="modal.dismiss()">Close</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="modal.close()">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #editPlusOneNameModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit +1 Information</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-information-editor [plusOne]="this.plusOne" (plusOneOutput)="handlePlusOneOutput($event)"></app-information-editor>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger btn-sm" (click)="modal.dismiss()">Close</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="modal.close()">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #editPlusFoodModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit +1 Dinner</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-food-selector [foods]="this.foods" [food]="this.plusOne.food" (selectedFoodIndexOutput)="changePlusOneFoodSelection($event)"></app-food-selector>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger btn-sm" (click)="modal.dismiss()">Close</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="modal.close()">Save</button>
+  </div>
+</ng-template>

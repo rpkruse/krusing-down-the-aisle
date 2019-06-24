@@ -1,0 +1,27 @@
+<div *ngIf="(pictures | async); else loading">
+  <div class="row border-bottom mt-lg-0 mt-3" *ngFor="let picture of pictures | async; let i = index;">
+    <div class="col-4 no-padding" *ngIf="i%2==0">
+      <img class="img-scaled" [src]="picture.img" />
+    </div>
+    <div class="col-8 no-padding" *ngIf="i%2==0">
+      <p class="ml-lg-3 ml-2">
+        {{ picture.desc }}
+      </p>
+    </div>
+
+    <div class="col-8 no-padding" *ngIf="i%2!=0">
+      <p class="ml-lg-0 ml-2">
+        {{ picture.desc }}
+      </p>
+    </div>
+    <div class="col-4 no-padding" *ngIf="i%2!=0">
+      <img class="img-scaled" [src]="picture.img" />
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="row">
+    <div class="col-12 loading text-center">Loading</div>
+  </div>
+</ng-template>
