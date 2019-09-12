@@ -3,6 +3,7 @@ import { RsvpComponent, RsvpCreateComponent, RsvpEditComponent } from './compone
 import { RsvpRoutingModule } from './rsvp-routing.module';
 import { SharedModule } from 'src/app/shared-module/shared-module.module';
 import { RsvpService, SharedDataService } from './services';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { RsvpService, SharedDataService } from './services';
   ],
   providers: [
     RsvpService,
-    SharedDataService
+    SharedDataService,
+    ConfirmationService
   ]
 })
 export class RsvpModule { }

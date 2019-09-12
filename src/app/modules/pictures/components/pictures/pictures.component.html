@@ -4,18 +4,23 @@
       <img class="img-scaled" [src]="picture.img" />
     </div>
     <div class="col-8 no-padding" *ngIf="i%2==0">
-      <p class="ml-lg-3 ml-2">
+      <!-- <p class="ml-lg-3 ml-2">
         {{ picture.desc }}
-      </p>
+      </p> -->
     </div>
 
     <div class="col-8 no-padding" *ngIf="i%2!=0">
-      <p class="ml-lg-0 ml-2">
+      <!-- <p class="ml-lg-0 ml-2">
         {{ picture.desc }}
-      </p>
+      </p> -->
     </div>
     <div class="col-4 no-padding" *ngIf="i%2!=0">
       <img class="img-scaled" [src]="picture.img" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <body>View All Photos at: <a href="https://galleries.page.link/oNn8N">Here!</a></body>
     </div>
   </div>
 </div>

@@ -5,6 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 import { ToasterService } from 'src/app/core-module/services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RsvpEditHandler } from './rsvp-edit.handler';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 @Component({
   selector: 'app-rsvp-edit',
@@ -23,11 +24,11 @@ export class RsvpEditComponent implements OnInit, OnDestroy {
   canSavePlusOneChanges = false;
 
   constructor(private rsvpService: RsvpService, private sharedDataService: SharedDataService,
-              private toasterService: ToasterService, private modal: NgbModal) { }
+              private toasterService: ToasterService, private modal: NgbModal, private confirmService: ConfirmationService) { }
 
   ngOnInit() {
     this.sharedDataSub = this.sharedDataService.person.subscribe(res => this.setPerson(res));
-    this.rsvpHandler = new RsvpEditHandler(this.rsvpService, this.sharedDataService, this.toasterService);
+    this.rsvpHandler = new RsvpEditHandler(this.rsvpService, this.sharedDataService, this.toasterService, this.confirmService);
   }
 
   openEditPersonFood(modal): void {

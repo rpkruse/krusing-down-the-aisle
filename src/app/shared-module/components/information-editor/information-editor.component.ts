@@ -47,6 +47,7 @@ export class InformationEditorComponent implements OnInit {
   }
 
   private createForm(): void {
+    console.log(this.plusOne);
     this.infoForm = this.fb.group({
       firstName: [this.plusOne.firstName, [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],
       lastName: [this.plusOne.lastName, [Validators.required, Validators.pattern(/^([A-Z]{1})([A-Za-z])*$/)]],

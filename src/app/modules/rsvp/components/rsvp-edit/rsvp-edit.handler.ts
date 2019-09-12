@@ -2,10 +2,12 @@ import { Observable, Subscription } from 'rxjs';
 import { Person, PlusOne, Food } from 'src/app/shared-module/models';
 import { RsvpService, SharedDataService } from '../../services';
 import { ToasterService } from 'src/app/core-module/services';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 export class RsvpEditHandler {
 
-  constructor(private rsvpService: RsvpService, private sharedDataService: SharedDataService, private toasterService: ToasterService) { }
+  constructor(private rsvpService: RsvpService, private sharedDataService: SharedDataService,
+    private toasterService: ToasterService, private confirmService: ConfirmationService) { }
 
   public savePersonChanges(person: Person): void {
     const s: Subscription = this.rsvpService.savePersonChanges(person).subscribe(
@@ -58,6 +60,14 @@ export class RsvpEditHandler {
   }
 
   public deletePlusOne(person: Person): void {
+    this.confirmService.confirm({
+      message: `Are you sure you want to remove ${person.plusOne.firstName} ${person.plusOne.lastName} from your RSVP?`,
+      header: 'Confirm Changes',
+      accept: () => this.deletePlusOneOnConfirm(person)
+    })
+  }
+
+  private deletePlusOneOnConfirm(person: Person): void {
     const s: Subscription = this.rsvpService.deletePlusOne(person.plusOne.id).subscribe(
       d => d,
       err => this.toasterService.showError('Unable to delete +1'),
