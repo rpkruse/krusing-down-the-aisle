@@ -15,17 +15,13 @@ export class AppComponent {
       link: Constants.uiRoutes.home,
       text: 'Home'
     },
-    {
-      link: Constants.uiRoutes.rsvp,
-      text: 'RSVP'
-    },
+    // {
+    //   link: Constants.uiRoutes.rsvp,
+    //   text: 'RSVP'
+    // },
     {
       link: Constants.uiRoutes.pictures,
       text: 'Photos'
-    },
-    {
-      link: Constants.uiRoutes.events,
-      text: 'Events'
     },
     {
       link: Constants.uiRoutes.weddingParty,
@@ -39,7 +35,7 @@ export class AppComponent {
       link: Constants.uiRoutes.registry,
       text: 'Gift Registry'
     }
-  ]
+  ];
 
   mobileNavLinkClicked(): void {
     this.isNavCollapsed = true;
