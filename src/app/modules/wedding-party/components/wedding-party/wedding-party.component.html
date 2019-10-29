@@ -5,7 +5,7 @@
 <div *ngIf="!loading && this.wholeParty.length">
   <div class="row mt-lg-0 mt-3" [ngClass]="i != wholeParty.length-1 ? 'border-bottom' : ''" *ngFor="let p of wholeParty index as i">
     <div class="col-lg-12 col-md-10 col-sm-9 col-8 no-padding" *ngIf="i%2==0">
-      <img class="scaled-wedding-img float-left ml-5" [src]="p.picture" />
+      <img class="scaled-wedding-img float-left" [src]="p.picture" />
       <div class="col-12">
         <span class="d-inline subheader text-break">{{ p.firstName }} {{ p.lastName }} {{ p.spot }}</span>
       </div>
