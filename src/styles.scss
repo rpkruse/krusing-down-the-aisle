@@ -91,13 +91,13 @@
 }
 
 .loading:after {
-		display: inline-block;
-		position: absolute;
-		margin-left: .25em;
-		content: "";
-		vertical-align: bottom;
-		animation: ellipsis 1100ms infinite;
-		overflow: hidden;
+  display: inline-block;
+  position: absolute;
+  margin-left: .25em;
+  content: "";
+  vertical-align: bottom;
+  animation: ellipsis 1100ms infinite;
+  overflow: hidden;
 
 }
 
