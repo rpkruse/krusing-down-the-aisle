@@ -6,7 +6,7 @@
       <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" [value]="infoForm.controls['firstName'].value"
       (input)="checkFormValidity()" [ngClass]="getInputValidationClass('firstName')" />
       <div *ngIf="inputHasError('firstName', 'required')" class="invalid-feedback text-left">First name cannot be blank</div>
-      <div *ngIf="inputHasError('firstName', 'pattern')" class="invalid-feedback text-left">First Name must start with a capital letter and only contain alphabetical characters</div>
+      <div *ngIf="inputHasError('firstName', 'pattern')" class="invalid-feedback text-left">First Name must only contain alphabetical characters</div>
     </div>
   </div>
 
@@ -17,7 +17,7 @@
       <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name" [value]="infoForm.controls['lastName'].value"
       (input)="checkFormValidity()" [ngClass]="getInputValidationClass('lastName')" />
       <div *ngIf="inputHasError('lastName', 'required')" class="invalid-feedback text-left">Last name cannot be blank</div>
-      <div *ngIf="inputHasError('lastName', 'pattern')" class="invalid-feedback text-left">Last Name must start with a capital letter and only contain alphabetical characters</div>
+      <div *ngIf="inputHasError('lastName', 'pattern')" class="invalid-feedback text-left">Last Name must only contain alphabetical characters</div>
     </div>
   </div>
 

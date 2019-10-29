@@ -86,7 +86,7 @@
       <div class="col-lg-6 mb-lg-0 mb-3 text-left">
         <app-information-editor [plusOne]="this.plusOne" (plusOneOutput)="handlePlusOneOutput($event)"></app-information-editor>
       </div>
-  
+
       <div class="col-lg-6">
         <app-food-selector [foods]="this.foods" [food]="this.plusOne.food" (selectedFoodIndexOutput)="changePlusOneFoodSelection($event)"></app-food-selector>
       </div>
@@ -94,7 +94,7 @@
   </div>
   <div class="modal-footer">
       <button type="button" class="btn btn-danger btn-sm" (click)="modal.dismiss()">Close</button>
-    <button type="button" class="btn btn-success btn-sm" (click)="modal.close()">Save</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="modal.close()" [disabled]="!canSavePlusOneChanges">Save</button>
   </div>
 </ng-template>
 
@@ -110,7 +110,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-danger btn-sm" (click)="modal.dismiss()">Close</button>
-    <button type="button" class="btn btn-success btn-sm" (click)="modal.close()">Save</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="modal.close()" [disabled]="!canSavePlusOneChanges">Save</button>
   </div>
 </ng-template>
 
