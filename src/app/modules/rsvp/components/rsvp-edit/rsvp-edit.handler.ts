@@ -66,9 +66,17 @@ export class RsvpEditHandler {
       err => this.toasterService.showError(`Unable to update ${pm.firstName} ${pm.lastName}'s information`),
       () => {
         s.unsubscribe();
-        this.toasterService.showSuccess(`${pm.firstName} ${pm.lastName}'s informatioupdated successfully`, `Your party information has been updated to your RSVP`);
+        this.toasterService.showSuccess(`${pm.firstName} ${pm.lastName}'s information updated successfully`, `Your party information has been updated to your RSVP`);
       }
     );
+  }
+
+  public deletePartyMember(pm: PartyMember, person: Person): void {
+    this.confirmService.confirm({
+      message: `Are you sure you want to remove ${pm.firstName} ${pm.lastName} from your RSVP?`,
+      header: 'Confirm Changes',
+      accept: () => this.deletePartyMemberOnConfirm(pm, person)
+    });
   }
 
   public deletePlusOne(person: Person): void {
@@ -76,7 +84,7 @@ export class RsvpEditHandler {
       message: `Are you sure you want to remove ${person.plusOne.firstName} ${person.plusOne.lastName} from your RSVP?`,
       header: 'Confirm Changes',
       accept: () => this.deletePlusOneOnConfirm(person)
-    })
+    });
   }
 
   private deletePlusOneOnConfirm(person: Person): void {
@@ -88,6 +96,22 @@ export class RsvpEditHandler {
         person.plusOne = null;
         this.sharedDataService.changePerson(person);
         this.toasterService.showSuccess('+1 removed successfully', 'Your +1 has been removed from your RSVP');
+      }
+    );
+  }
+
+  private deletePartyMemberOnConfirm(pm: PartyMember, person: Person): void {
+    const s: Subscription = this.rsvpService.deletePartyMember(pm).subscribe(
+      d => d,
+      err => this.toasterService.showError(`Unable to remove ${pm.firstName} ${pm.lastName} from RSVP, please try again later`),
+      () => {
+        s.unsubscribe();
+        this.toasterService.showSuccess(`${pm.firstName} ${pm.lastName} removed successfully`, `Your party information has been updated to your RSVP`);
+
+        const index: number = person.partyMembers.findIndex(x => x.id === pm.id);
+
+        person.partyMembers.splice(index, 1);
+        this.sharedDataService.changePerson(person);
       }
     );
   }

@@ -27,6 +27,10 @@ export class RsvpService {
     return this.http.put(`${environment.api}PartyMembers/${pm.id}`, pm) as Observable<PartyMember>;
   }
 
+  deletePartyMember(pm: PartyMember): Observable<PartyMember> {
+    return this.http.delete(`${environment.api}PartyMembers/${pm.id}`) as Observable<PartyMember>;
+  }
+
   addPlusOne(plusOne: any): Observable<PlusOne> {
     return this.http.post(`${environment.api}PlusOnes`, plusOne) as Observable<PlusOne>;
   }

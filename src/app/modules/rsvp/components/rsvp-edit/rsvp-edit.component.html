@@ -32,6 +32,7 @@
           <div class="col-lg-4">
             <span class="subheader d-block"><b>Name:</b></span>
             {{ pm.firstName }} {{ pm.lastName }}
+            <span class="ml-2 clickable" placement="right" ngbTooltip="Remove" (click)="deletePartyMember(pm)">&#10005;</span>
           </div>
           <div class="col-lg-4">
             <span class="subheader d-block mt-3 mt-lg-0"><b>Food Selection:</b></span>

@@ -77,6 +77,10 @@ export class RsvpEditComponent implements OnInit, OnDestroy {
     this.rsvpHandler.deletePlusOne(this.person);
   }
 
+  deletePartyMember(pm: PartyMember): void {
+    this.rsvpHandler.deletePartyMember(pm, this.person);
+  }
+
   handlePlusOneOutput(plusOne: PlusOne) {
     if (!plusOne) {
       this.canSavePlusOneChanges = false;
