@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Food, Person, PlusOne } from 'src/app/shared-module/models';
+import { Food, Person, PlusOne, PartyMember } from 'src/app/shared-module/models';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -21,6 +21,10 @@ export class RsvpService {
 
   savePersonChanges(person: Person): Observable<Person> {
     return this.http.put(`${environment.api}Persons/${person.id}`, person) as Observable<Person>;
+  }
+
+  savePartyMemberChanges(pm: PartyMember): Observable<PartyMember> {
+    return this.http.put(`${environment.api}PartyMembers/${pm.id}`, pm) as Observable<PartyMember>;
   }
 
   addPlusOne(plusOne: any): Observable<PlusOne> {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Food, Person, PlusOne } from 'src/app/shared-module/models';
+import { Food, Person, PlusOne, PartyMember } from 'src/app/shared-module/models';
 import { SharedDataService, RsvpService } from '../../services';
 import { Subscription, Observable } from 'rxjs';
 import { ToasterService } from 'src/app/core-module/services';
@@ -20,6 +20,7 @@ export class RsvpEditComponent implements OnInit, OnDestroy {
 
   person: Person;
   plusOne: PlusOne;
+  selectedPartyMember: PartyMember;
 
   canSavePlusOneChanges = false;
 
@@ -38,6 +39,18 @@ export class RsvpEditComponent implements OnInit, OnDestroy {
     }, (dismiss) => {
       this.setPerson(this.sharedDataService.person.getValue());
     });
+  }
+
+  openEditPartyMemberFood(modal, pmIndex: number): void {
+    this.selectedPartyMember = this.person.partyMembers[pmIndex];
+    this.modal.open(modal, { windowClass: 'xl-modal', centered: true}).result.then(
+      (save) => {
+        this.rsvpHandler.savePartyMemberChanges(this.person.partyMembers[pmIndex]);
+        this.selectedPartyMember = null;
+      }, (dismiss) => {
+        this.setPerson(this.sharedDataService.person.getValue());
+        this.selectedPartyMember = null;
+      });
   }
 
   openCreatePlusOneModal(modal): void {
@@ -82,6 +95,11 @@ export class RsvpEditComponent implements OnInit, OnDestroy {
   public changePlusOneFoodSelection(foodIndex: number): void {
     this.plusOne.foodId = this.foods[foodIndex].id;
     this.plusOne.food = this.foods[foodIndex];
+  }
+
+  public changePartyMemberFoodSelection(foodIndex: number): void {
+    this.selectedPartyMember.foodId = this.foods[foodIndex].id;
+    this.selectedPartyMember.food = this.foods[foodIndex];
   }
 
   closeEditPage(): void {

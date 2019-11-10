@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import { Person, PlusOne, Food } from 'src/app/shared-module/models';
+import { Person, PlusOne, Food, PartyMember } from 'src/app/shared-module/models';
 import { RsvpService, SharedDataService } from '../../services';
 import { ToasterService } from 'src/app/core-module/services';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
@@ -55,6 +55,18 @@ export class RsvpEditHandler {
         this.toasterService.showSuccess('+1 information updated successfully', 'Your +1 information has been updated to your RSVP');
         person.plusOne = { ...plusOne };
         this.sharedDataService.changePerson(person);
+      }
+    );
+  }
+
+
+  public savePartyMemberChanges(pm: PartyMember): void {
+    const s: Subscription = this.rsvpService.savePartyMemberChanges(pm).subscribe(
+      d => d,
+      err => this.toasterService.showError(`Unable to update ${pm.firstName} ${pm.lastName}'s information`),
+      () => {
+        s.unsubscribe();
+        this.toasterService.showSuccess(`${pm.firstName} ${pm.lastName}'s informatioupdated successfully`, `Your party information has been updated to your RSVP`);
       }
     );
   }

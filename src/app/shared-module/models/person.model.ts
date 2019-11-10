@@ -1,5 +1,6 @@
 import { Food } from './food.model';
 import { PlusOne } from './plus-one.model';
+import { PartyMember } from './party-member.model';
 
 export interface Person {
   id: number;
@@ -12,4 +13,6 @@ export interface Person {
   hasRSVPD: boolean;
   food: Food;
   plusOne: PlusOne;
+  canAttend: boolean;
+  partyMembers?: PartyMember[];
 }
