@@ -4,6 +4,7 @@ import { SharedDataService, RsvpService } from '../../services';
 import { Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/components/common/menuitem';
 import { ToasterService } from 'src/app/core-module/services';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 @Component({
   selector: 'app-rsvp-create',
@@ -22,7 +23,7 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
 
   sharedDataSub: Subscription;
 
-  constructor(private sharedDataService: SharedDataService, private rsvpService: RsvpService, private toasterService: ToasterService) { }
+  constructor(private sharedDataService: SharedDataService, private rsvpService: RsvpService, private toasterService: ToasterService, private confirmService: ConfirmationService) { }
 
   ngOnInit() {
     this.sharedDataSub = this.sharedDataService.person.subscribe(res => this.setPerson(res));
@@ -31,7 +32,17 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges() {
     if (this.foods && !this.plusOne) {
       this.createEmptyPlusOne();
+
+      if (this.person && !this.person.food) this.person.food = this.foods[0];
     }
+  }
+
+  declineRSVP(): void {
+    this.confirmService.confirm({
+      message: `Are you sure you want to decline?`,
+      header: 'Confirm Action',
+      accept: () => this.postRsvpDecline()
+    });
   }
 
   changeFoodSelection(foodIndex: number): void {
@@ -51,10 +62,7 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
   finishRSVP(): void {
     this.saving = true;
 
-    if (this.person.plusOne)
-      this.savePlusOne();
-    else
-      this.saveRSVP();
+    this.saveRSVP();
   }
 
   skipPlusOne(): void {
@@ -76,6 +84,8 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
       case 0:
         return false;
       case 1:
+        return false;
+      case 2:
         if (this.person.hasPlusone && this.person.plusOne !== null) return false;
         return true;
       default:
@@ -83,14 +93,14 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private savePlusOne(): void {
+  private savePlusOne(p: Person): void {
     const poToSend = {
       firstName: this.person.plusOne.firstName,
       lastName: this.person.plusOne.lastName,
       foodId: this.person.plusOne.foodId,
       hasAllergy: this.person.plusOne.allergy.length > 0,
       allergy: this.person.plusOne.allergy,
-      personId: this.person.id
+      personId: p.id
     };
     const savedFood: Food = { ...this.person.plusOne.food };
 
@@ -100,7 +110,6 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
       () => {
         s.unsubscribe();
         this.person.plusOne.food = savedFood;
-        this.saveRSVP();
       }
     );
   }
@@ -108,7 +117,48 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
   private saveRSVP(): void {
     this.person.hasRSVPD = true;
 
-    const s: Subscription = this.rsvpService.savePersonChanges(this.person).subscribe(
+    const p = {
+      foodId: this.person.foodId,
+      hasAllergy: this.person.hasAllergy,
+      hasPlusone: this.person.hasPlusone,
+      hasRSVPD: true,
+      partyMembers: this.person.partyMembers,
+      canAttend: true,
+      allergy: this.person.allergy,
+      firstName: this.person.firstName,
+      lastName: this.person.lastName
+    }
+
+    let returnedPerson: Person;
+    const s: Subscription = this.rsvpService.addPerson(p).subscribe(
+      d => returnedPerson = d,
+      err =>  {
+        this.toasterService.showError('Unable to save RSVP, please try again later');
+        this.saving = false;
+      },
+      () => {
+        s.unsubscribe();
+        this.toasterService.showSuccess('RSVP Saved Successfully', 'Your RSVP was successfully saved');
+        this.saving = false;
+        if (this.person.hasPlusone) this.savePlusOne(returnedPerson);
+      }
+    );
+  }
+
+  private postRsvpDecline(): void {
+    const p = {
+      foodId: 1,
+      hasAllergy: false,
+      hasPlusone: false,
+      hasRSVPD: true,
+      partyMembers: [],
+      canAttend: false,
+      allergy: '',
+      firstName: this.person.firstName,
+      lastName: this.person.lastName
+    }
+
+    const s: Subscription = this.rsvpService.addPerson(p).subscribe(
       d => d,
       err =>  {
         this.toasterService.showError('Unable to save RSVP, please try again later');
@@ -145,12 +195,15 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setSteps(): void {
-    this.steps.push({ label: 'Select Food', command: (event: any) => this.activeIndex = 0 });
+    this.steps = [];
+
+    this.steps.push({ label: 'Confirm Attendance', command: (event: any) => this.activeIndex = 0 });
+    this.steps.push({ label: 'Select Food', command: (event: any) => this.activeIndex = 1 });
 
     if (this.person.hasPlusone)
-      this.steps.push({ label: 'Add +1', command: (event: any) => this.activeIndex = 1 });
+      this.steps.push({ label: 'Add +1', command: (event: any) => this.activeIndex = 2 });
 
-    this.steps.push({ label: 'Confirm RSVP', command: (event: any) => this.activeIndex = 2 });
+    this.steps.push({ label: 'Confirm RSVP', command: (event: any) => this.activeIndex = 3 });
   }
 
   ngOnDestroy() {

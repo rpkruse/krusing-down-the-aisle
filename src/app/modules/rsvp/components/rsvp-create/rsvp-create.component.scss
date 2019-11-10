@@ -1,6 +1,7 @@
-// :host::ng-deep .ui-steps .ui-steps-item {
-//   width: 33%;
-// }
+:host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(1),
+:host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(1) ~ li {
+  width: 100%;
+}
 
 :host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(2),
 :host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(2) ~ li {
@@ -10,4 +11,9 @@
 :host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(3),
 :host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(3) ~ li {
   width: 33%;
+}
+
+:host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(4),
+:host::ng-deep .ui-steps .ui-steps-item:first-child:nth-last-child(4) ~ li {
+  width: 25%;
 }
