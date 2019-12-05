@@ -7,10 +7,10 @@ const routes: Routes = [
     path: Constants.uiRoutes.home,
     loadChildren: './modules/home/home.module#HomeModule'
   },
-  {
-    path: Constants.uiRoutes.rsvp,
-    loadChildren: './modules/rsvp/rsvp.module#RsvpModule'
-  },
+  // {
+  //   path: Constants.uiRoutes.rsvp,
+  //   loadChildren: './modules/rsvp/rsvp.module#RsvpModule'
+  // },
   {
     path: Constants.uiRoutes.pictures,
     loadChildren: './modules/pictures/pictures.module#PicturesModule'
