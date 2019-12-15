@@ -8,7 +8,12 @@ import { PlusOne } from '../../models';
   styleUrls: ['./information-editor.component.scss']
 })
 export class InformationEditorComponent implements OnInit {
-  @Input() plusOne: PlusOne;
+  private _plusOne: PlusOne;
+
+  @Input() set plusOne(po: PlusOne) {
+    this._plusOne = po;
+    this.createForm();
+  }
   @Output() plusOneOutput: EventEmitter<PlusOne> = new EventEmitter<PlusOne>();
 
   infoForm: FormGroup;
@@ -21,11 +26,11 @@ export class InformationEditorComponent implements OnInit {
 
   checkFormValidity(): void {
     if (this.infoForm.valid) {
-      this.plusOne.firstName = this.infoForm.controls['firstName'].value;
-      this.plusOne.lastName = this.infoForm.controls['lastName'].value;
-      this.plusOne.allergy = this.infoForm.controls['allergy'].value;
+      this._plusOne.firstName = this.infoForm.controls['firstName'].value;
+      this._plusOne.lastName = this.infoForm.controls['lastName'].value;
+      this._plusOne.allergy = this.infoForm.controls['allergy'].value;
 
-      if (this.plusOne.allergy.length) this.plusOne.hasAllergy = true;
+      if (this._plusOne.allergy.length) this._plusOne.hasAllergy = true;
 
       this.outputPlusOne();
     } else {
@@ -35,7 +40,7 @@ export class InformationEditorComponent implements OnInit {
 
   outputPlusOne(): void {
     if (this.infoForm.valid)
-      this.plusOneOutput.emit(this.plusOne);
+      this.plusOneOutput.emit(this._plusOne);
   }
 
   getInputValidationClass(inputField: string): string {
@@ -48,9 +53,9 @@ export class InformationEditorComponent implements OnInit {
 
   private createForm(): void {
     this.infoForm = this.fb.group({
-      firstName: [this.plusOne.firstName, [Validators.required, Validators.pattern(/^([A-Za-z])*$/)]],
-      lastName: [this.plusOne.lastName, [Validators.required, Validators.pattern(/^([A-Za-z])*$/)]],
-      allergy: ['', Validators.pattern(/^([A-Za-z ,])*$/)]
+      firstName: [this._plusOne.firstName, [Validators.required, Validators.pattern(/^([A-Za-z])*$/)]],
+      lastName: [this._plusOne.lastName, [Validators.required, Validators.pattern(/^([A-Za-z])*$/)]],
+      allergy: [this._plusOne.allergy, Validators.pattern(/^([A-Za-z ,])*$/)]
     });
   }
 }

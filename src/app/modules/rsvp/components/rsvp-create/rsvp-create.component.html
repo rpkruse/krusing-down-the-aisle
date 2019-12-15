@@ -37,8 +37,12 @@
   </div>
 </div>
 
-<!-- Finish without +1 -->
 <div class="row" *ngIf="activeIndex === 2 && !person.hasPlusone">
+  <app-add-party-member [foods]="foods" (sendPartyMembers)="handlePartyMemberOutput($event)"></app-add-party-member>
+</div>
+
+<!-- Finish without +1 -->
+<div class="row" *ngIf="activeIndex === 3 && !person.hasPlusone">
   <div class="col-12">
     <div class="row text-center no-gutters">
       <div class="col-lg-4 bg-light border">
@@ -52,6 +56,22 @@
       <div class="col-lg-4 bg-light border">
         <span class="subheader d-block"><b>Allergies:</b></span>
         {{ !person.hasAllergy ? 'None' : person.allergy }}
+      </div>
+    </div>
+  </div>
+  <div class="col-12 mt-lg-5 mt-4" *ngFor="let pm of partyMembers">
+    <div class="row text-center no-gutters">
+      <div class="col-lg-4 bg-light border">
+        <span class="subheader d-block"><b>Name:</b></span>
+        {{ pm.firstName }} {{ pm.lastName }}
+      </div>
+      <div class="col-lg-4 bg-light border">
+        <span class="subheader d-block"><b>Food Selection:</b></span>
+        {{ pm.food.name }}
+      </div>
+      <div class="col-lg-4 bg-light border">
+        <span class="subheader d-block"><b>Allergies:</b></span>
+        {{ !pm.hasAllergy ? 'None' : pm.allergy }}
       </div>
     </div>
   </div>
@@ -101,12 +121,14 @@
 
 <div class="row mt-2">
   <div class="col-12">
-    <button type="button" class="btn btn-danger float-left" (click)="declineRSVP()" *ngIf="activeIndex === 0">No</button>
-    <button type="button" class="btn btn-success float-right" (click)="movePage(1)" *ngIf="activeIndex === 0">Yes</button>
+    <span class="float-right">
+      <button type="button" class="btn btn-danger mr-1" (click)="declineRSVP()" *ngIf="activeIndex === 0">No</button>
+      <button type="button" class="btn btn-success" (click)="movePage(1)" *ngIf="activeIndex === 0">Yes</button>
+    </span>
 
-    <button type="button" class="btn btn-danger float-left" (click)="movePage(-1)" [disabled]="activeIndex === 1" *ngIf="activeIndex > 0">Back</button>
+    <button type="button" class="btn btn-danger float-left" (click)="movePage(-1)" [disabled]="activeIndex < 1" *ngIf="activeIndex > 0">Back</button>
     <button type="button" class="btn btn-success float-right" (click)="movePage(1)" [disabled]="isNextButtonDisabled()" *ngIf="activeIndex < steps.length - 1 && activeIndex > 0">Next</button>
-    <button type="button" class="btn btn-info float-right" (click)="skipPlusOne()" *ngIf="activeIndex === 2 && person.hasPlusone">Skip</button>
+    <button type="button" class="btn btn-info float-right mr-1" (click)="skipPlusOne()" *ngIf="activeIndex === 2 && person.hasPlusone">Skip</button>
     <button type="button" class="btn btn-success float-right" (click)="finishRSVP()" *ngIf="activeIndex >= steps.length - 1">Finish</button>
   </div>
 </div>

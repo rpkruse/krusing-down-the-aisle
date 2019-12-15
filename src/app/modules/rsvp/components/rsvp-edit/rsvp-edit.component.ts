@@ -112,6 +112,9 @@ export class RsvpEditComponent implements OnInit, OnDestroy {
 
   private setPerson(person: Person): void {
     this.person = { ...person };
+
+    if (!this.person.food)
+      this.person.food = this.foods.find(x => x.id === this.person.foodId);
   }
 
   private createEmptyPlusOne(): void {

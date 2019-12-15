@@ -5,7 +5,8 @@
   </div>
 </div>
 
-<div class="row mt-lg-4 mt-3 justify-content-between" *ngIf="person">
+<!-- Have person and they are attending -->
+<div class="row mt-lg-4 mt-3 justify-content-between" *ngIf="person && person.canAttend">
   <!-- Person -->
   <div class="col-12 text-center border bg-light">
     <div class="col-12">
@@ -79,6 +80,14 @@
         <button type="button" class="btn btn-info" (click)="openCreatePlusOneModal(createPlusOneModal)">Add +1</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Have person and they are not attending -->
+<div class="row mt-lg-4 mt-3" *ngIf="person && !person.canAttend">
+  <div class="col text-center">
+    <h4>You have declined you wedding invatiation</h4>
+    <small>If this was a mistake or you have a change in plans, please contact either Sarah or Ryan and they can adjust your RSVP for you.</small>
   </div>
 </div>
 

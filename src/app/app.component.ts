@@ -15,10 +15,10 @@ export class AppComponent {
       link: Constants.uiRoutes.home,
       text: 'Home'
     },
-    // {
-    //   link: Constants.uiRoutes.rsvp,
-    //   text: 'RSVP'
-    // },
+    {
+      link: Constants.uiRoutes.rsvp,
+      text: 'RSVP'
+    },
     {
       link: Constants.uiRoutes.pictures,
       text: 'Photos'

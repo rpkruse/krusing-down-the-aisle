@@ -49,6 +49,11 @@ export class RsvpComponent implements OnInit, OnDestroy {
     );
   }
 
+  searchOnCreate(name: string): void {
+    this.nameSearchValue = name;
+    this.searchForPerson();
+  }
+
   setPerson(person: Person): void {
     if (!person) this.nameSearchValue = '';
 

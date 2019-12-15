@@ -18,12 +18,15 @@
   </div>
 </div>
 
+
 <div class="loading text-center" *ngIf="loading">Loading</div>
 
-<div *ngIf="person && !person.hasRSVPD">
-  <app-rsvp-create [foods]="(this.foods | async)"></app-rsvp-create>
-</div>
+<div *ngIf="this.foods | async as foods">
+  <div *ngIf="person && !person.hasRSVPD">
+    <app-rsvp-create [foods]="foods" (outputNewUsersName)="searchOnCreate($event)"></app-rsvp-create>
+  </div>
 
-<div *ngIf="person && person.hasRSVPD">
-  <app-rsvp-edit [foods]="(this.foods | async)"></app-rsvp-edit>
+  <div *ngIf="person && person.hasRSVPD">
+    <app-rsvp-edit [foods]="foods"></app-rsvp-edit>
+  </div>
 </div>

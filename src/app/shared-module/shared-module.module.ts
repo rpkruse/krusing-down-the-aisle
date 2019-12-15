@@ -5,12 +5,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgEnterDirective } from './directives';
 import { FoodSelectorComponent, InformationEditorComponent } from './components';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AddPartyMemberComponent } from './components/add-party-member/add-party-member.component';
 
 @NgModule({
   declarations: [
     NgEnterDirective,
     FoodSelectorComponent,
-    InformationEditorComponent
+    InformationEditorComponent,
+    AddPartyMemberComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NgEnterDirective,
     FoodSelectorComponent,
     InformationEditorComponent,
+    AddPartyMemberComponent
   ]
 })
 export class SharedModule { }

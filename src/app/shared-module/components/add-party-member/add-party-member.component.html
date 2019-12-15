@@ -1,0 +1,25 @@
+<div class="container" *ngIf="plusOnePayload">
+  <div class="row">
+    <!-- Name/Allergy Info-->
+    <div class="col-lg-4 mb-lg-0 mb-3 text-left">
+      <h6 class="text-center">Party Members</h6>
+      <ul class="list-group list-group-item-action">
+        <li class="list-group-item bg-secondary text-light text-center" (click)="addNewPartyMemberListButtonSelected()">Add A New Party Member</li>
+        <li class="list-group-item" [ngClass]="i === selectedPmIndex ? 'active': ''" *ngFor="let pm of partyMembers; index as i" (click)="currentPartyMemberClicked(i)">
+          {{ pm.firstName }} {{ pm.lastName }}
+        </li>
+      </ul>
+    </div>
+    <!-- Dinner Selection-->
+    <div class="col-lg-8 mt-lg-0 mt-3">
+      <app-information-editor [plusOne]="this.plusOnePayload" (plusOneOutput)="handlePlusOneOutput($event)"></app-information-editor>
+      <app-food-selector [foods]="this.foods" [food]="this.plusOnePayload.food" (selectedFoodIndexOutput)="changePlusOneFoodSelection($event)"></app-food-selector>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button type="button" class="btn btn-success float-right" (click)="addPartyMember()" [disabled]="!canAdd">{{ selectedPmIndex < 0 ? 'Add' : 'Save' }}</button>
+      <button type="button" class="btn btn-danger float-right mr-1" (click)="deletePartyMember()" *ngIf="selectedPmIndex >=0">Remove</button>
+    </div>
+  </div>
+</div>

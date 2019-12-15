@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
-import { Food, Person, PlusOne } from 'src/app/shared-module/models';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Food, Person, PlusOne, PartyMember } from 'src/app/shared-module/models';
 import { SharedDataService, RsvpService } from '../../services';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { MenuItem } from 'primeng/components/common/menuitem';
 import { ToasterService } from 'src/app/core-module/services';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
@@ -11,13 +11,15 @@ import { ConfirmationService } from 'primeng/components/common/confirmationservi
   templateUrl: './rsvp-create.component.html',
   styleUrls: ['./rsvp-create.component.scss']
 })
-export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
+export class RsvpCreateComponent implements OnInit, OnDestroy {
   @Input() foods: Food[];
+  @Output() outputNewUsersName: EventEmitter<string> = new EventEmitter<string>();
 
   steps: MenuItem[] = [];
 
   person: Person;
   plusOne: PlusOne;
+  partyMembers: PartyMember[] = [];
   activeIndex = 0;
   saving = false;
 
@@ -27,14 +29,6 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.sharedDataSub = this.sharedDataService.person.subscribe(res => this.setPerson(res));
-  }
-
-  ngOnChanges() {
-    if (this.foods && !this.plusOne) {
-      this.createEmptyPlusOne();
-
-      if (this.person && !this.person.food) this.person.food = this.foods[0];
-    }
   }
 
   declineRSVP(): void {
@@ -57,6 +51,10 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
 
   handlePlusOneOutput(plusOne: PlusOne): void {
     this.person.plusOne = plusOne;
+  }
+
+  handlePartyMemberOutput(partyMembers: PartyMember[]): void {
+    this.partyMembers = partyMembers;
   }
 
   finishRSVP(): void {
@@ -87,35 +85,13 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
         return false;
       case 2:
         if (this.person.hasPlusone && this.person.plusOne !== null) return false;
-        return true;
+        return this.person.hasPlusone;
       default:
         return true;
     }
   }
 
-  private savePlusOne(p: Person): void {
-    const poToSend = {
-      firstName: this.person.plusOne.firstName,
-      lastName: this.person.plusOne.lastName,
-      foodId: this.person.plusOne.foodId,
-      hasAllergy: this.person.plusOne.allergy.length > 0,
-      allergy: this.person.plusOne.allergy,
-      personId: p.id
-    };
-    const savedFood: Food = { ...this.person.plusOne.food };
-
-    const s: Subscription = this.rsvpService.addPlusOne(poToSend).subscribe(
-      d => this.person.plusOne = d,
-      err => this.toasterService.showError('Unable to save +1'),
-      () => {
-        s.unsubscribe();
-        this.person.plusOne.food = savedFood;
-      }
-    );
-  }
-
   private saveRSVP(): void {
-    this.person.hasRSVPD = true;
 
     const p = {
       foodId: this.person.foodId,
@@ -127,7 +103,7 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
       allergy: this.person.allergy,
       firstName: this.person.firstName,
       lastName: this.person.lastName
-    }
+    };
 
     let returnedPerson: Person;
     const s: Subscription = this.rsvpService.addPerson(p).subscribe(
@@ -140,7 +116,57 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
         s.unsubscribe();
         this.toasterService.showSuccess('RSVP Saved Successfully', 'Your RSVP was successfully saved');
         this.saving = false;
-        if (this.person.hasPlusone) this.savePlusOne(returnedPerson);
+
+        if (this.person.hasPlusone && this.person.plusOne !== null) {
+          this.savePlusOne(returnedPerson);
+        } else {
+          if (this.partyMembers.length > 0)
+            this.savePartyMembers(returnedPerson);
+          else
+            this.outputNewUsersName.emit(`${returnedPerson.firstName} ${returnedPerson.lastName}`);
+        }
+      }
+    );
+  }
+
+  private savePartyMembers(p: Person): void {
+    const apiCallsToMake = [];
+
+    this.partyMembers.forEach((pm: PartyMember) => {
+      const pmPayload = {
+        firstName: pm.firstName,
+        lastName: pm.lastName,
+        personId: p.id,
+        foodId: pm.foodId,
+        hasAllergy: pm.hasAllergy,
+        allergy: pm.allergy
+      };
+
+      apiCallsToMake.push(this.rsvpService.addPartyMember(pmPayload));
+    });
+
+    forkJoin(apiCallsToMake).subscribe((pms: PartyMember[]) => {
+      this.outputNewUsersName.emit(`${p.firstName} ${p.lastName}`);
+    },
+    err => this.toasterService.showError('Unable to save party members'));
+  }
+
+  private savePlusOne(p: Person): void {
+    const poToSend = {
+      firstName: this.person.plusOne.firstName,
+      lastName: this.person.plusOne.lastName,
+      foodId: this.person.plusOne.foodId,
+      hasAllergy: this.person.plusOne.allergy.length > 0,
+      allergy: this.person.plusOne.allergy,
+      personId: p.id
+    };
+
+    const s: Subscription = this.rsvpService.addPlusOne(poToSend).subscribe(
+      d => p.plusOne = d,
+      err => this.toasterService.showError('Unable to save +1'),
+      () => {
+        s.unsubscribe();
+        this.outputNewUsersName.emit(`${p.firstName} ${p.lastName}`);
       }
     );
   }
@@ -156,7 +182,7 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
       allergy: '',
       firstName: this.person.firstName,
       lastName: this.person.lastName
-    }
+    };
 
     const s: Subscription = this.rsvpService.addPerson(p).subscribe(
       d => d,
@@ -168,7 +194,7 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
         s.unsubscribe();
         this.toasterService.showSuccess('RSVP Saved Successfully', 'Your RSVP was successfully saved');
         this.saving = false;
-        this.sharedDataService.changePerson(this.person);
+        this.person.hasRSVPD = true;
       }
     );
   }
@@ -178,6 +204,13 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
 
     this.person = person;
     this.setSteps();
+
+    if (!this.person.food) {
+      this.person.food = this.foods[0];
+      this.person.foodId = this.foods[0].id;
+    }
+
+    if (!this.plusOne) this.createEmptyPlusOne();
   }
 
   private createEmptyPlusOne(): void {
@@ -197,11 +230,13 @@ export class RsvpCreateComponent implements OnInit, OnChanges, OnDestroy {
   private setSteps(): void {
     this.steps = [];
 
-    this.steps.push({ label: 'Confirm Attendance', command: (event: any) => this.activeIndex = 0 });
+    this.steps.push({ label: 'Confirmation', command: (event: any) => this.activeIndex = 0 });
     this.steps.push({ label: 'Select Food', command: (event: any) => this.activeIndex = 1 });
 
     if (this.person.hasPlusone)
       this.steps.push({ label: 'Add +1', command: (event: any) => this.activeIndex = 2 });
+    else
+      this.steps.push({ label: 'Add Party Members', command: (event: any) => this.activeIndex = 2 });
 
     this.steps.push({ label: 'Confirm RSVP', command: (event: any) => this.activeIndex = 3 });
   }

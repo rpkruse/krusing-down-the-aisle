@@ -23,8 +23,12 @@ export class RsvpService {
     return this.http.put(`${environment.api}Persons/${person.id}`, person) as Observable<Person>;
   }
 
-  addPerson(person: Object): Observable<Person> {
+  addPerson(person: object): Observable<Person> {
     return this.http.post(`${environment.api}Persons`, person) as Observable<Person>;
+  }
+
+  addPartyMember(pm: object): Observable<PartyMember> {
+    return this.http.post(`${environment.api}PartyMembers`, pm) as Observable<PartyMember>;
   }
 
   savePartyMemberChanges(pm: PartyMember): Observable<PartyMember> {
