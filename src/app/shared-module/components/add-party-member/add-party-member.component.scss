@@ -1,4 +1,8 @@
-.list-group-item:hover {
-  cursor: pointer;
-  border-color: #007bff !important;
+// .list-group-item:hover {
+//   cursor: pointer;
+//   border-color: #007bff !important;
+// }
+
+::ng-deep .xl-modal > .modal-dialog {
+  max-width: 1140px !important;
 }

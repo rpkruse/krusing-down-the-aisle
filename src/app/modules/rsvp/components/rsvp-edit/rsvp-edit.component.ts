@@ -42,10 +42,11 @@ export class RsvpEditComponent implements OnInit, OnDestroy {
   }
 
   openEditPartyMemberFood(modal, pmIndex: number): void {
-    this.selectedPartyMember = this.person.partyMembers[pmIndex];
+    this.selectedPartyMember = { ...this.person.partyMembers[pmIndex] };
     this.modal.open(modal, { windowClass: 'xl-modal', centered: true}).result.then(
       (save) => {
-        this.rsvpHandler.savePartyMemberChanges(this.person.partyMembers[pmIndex]);
+        this.rsvpHandler.savePartyMemberChanges(this.selectedPartyMember);
+        this.person.partyMembers[pmIndex] = this.selectedPartyMember;
         this.selectedPartyMember = null;
       }, (dismiss) => {
         this.setPerson(this.sharedDataService.person.getValue());

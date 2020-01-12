@@ -38,7 +38,9 @@
 </div>
 
 <div class="row" *ngIf="activeIndex === 2 && !person.hasPlusone">
-  <app-add-party-member [foods]="foods" (sendPartyMembers)="handlePartyMemberOutput($event)"></app-add-party-member>
+  <div class="col-12">
+    <app-add-party-member [foods]="foods" [partyMembers]="partyMembers" (sendPartyMembers)="handlePartyMemberOutput($event)"></app-add-party-member>
+  </div>
 </div>
 
 <!-- Finish without +1 -->
